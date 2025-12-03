@@ -12,16 +12,21 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import es.joshluq.pluginkit.ui.theme.PluginkitTheme
+import es.joshluq.pluginkit.mylibrary.GreetingProvider
 
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
+
+        val greetingProvider = GreetingProvider()
+        val message = greetingProvider.getGreeting()
+        
         setContent {
             PluginkitTheme {
                 Scaffold(modifier = Modifier.fillMaxSize()) { innerPadding ->
                     Greeting(
-                        name = "Android",
+                        name = message,
                         modifier = Modifier.padding(innerPadding)
                     )
                 }
@@ -33,7 +38,7 @@ class MainActivity : ComponentActivity() {
 @Composable
 fun Greeting(name: String, modifier: Modifier = Modifier) {
     Text(
-        text = "Hello $name!",
+        text = name,
         modifier = modifier
     )
 }

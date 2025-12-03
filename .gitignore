@@ -41,9 +41,9 @@ seeds.txt
 usage.txt
 
 # Capturas de pantalla de instrumentación.
-app/src/androidTest/screenshots/
+showcase/src/androidTest/screenshots/
 
-# Archivos de keystore para firmar la app. ¡NUNCA los subas a un repositorio público!
+# Archivos de keystore para firmar la showcase. ¡NUNCA los subas a un repositorio público!
 *.jks
 *.keystore
 

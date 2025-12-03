@@ -21,6 +21,7 @@ dependencyResolutionManagement {
 }
 
 rootProject.name = "Pluginkit"
-include(":app")
+include(":showcase")
+include(":mylibrary")
 
 includeBuild("build-logic")

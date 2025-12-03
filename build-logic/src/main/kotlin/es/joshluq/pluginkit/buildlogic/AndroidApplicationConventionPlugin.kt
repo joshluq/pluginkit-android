@@ -5,7 +5,9 @@ import org.gradle.api.Plugin
 import org.gradle.api.Project
 import org.gradle.kotlin.dsl.configure
 import org.gradle.api.JavaVersion
+import org.gradle.kotlin.dsl.dependencies
 
+@Suppress("unused")
 class AndroidApplicationConventionPlugin : Plugin<Project> {
     override fun apply(target: Project) {
         with(target) {
@@ -15,17 +17,32 @@ class AndroidApplicationConventionPlugin : Plugin<Project> {
             }
 
             extensions.configure<ApplicationExtension> {
-                compileSdk = 34
+                compileSdk = 36
                 defaultConfig {
                     minSdk = 24
-                    targetSdk = 34
+                    targetSdk = 36
                     testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
+                }
+
+                buildTypes {
+                    release {
+                        isMinifyEnabled = false
+                        proguardFiles(
+                            getDefaultProguardFile("proguard-android-optimize.txt"),
+                            "proguard-rules.pro"
+                        )
+                    }
                 }
 
                 compileOptions {
                     sourceCompatibility = JavaVersion.VERSION_11
                     targetCompatibility = JavaVersion.VERSION_11
                 }
+            }
+
+            dependencies {
+                add("implementation", libs.findLibrary("androidx-core-ktx").get())
+                add("implementation", libs.findLibrary("androidx-lifecycle-runtime-ktx").get())
             }
         }
     }

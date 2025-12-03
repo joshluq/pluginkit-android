@@ -4,14 +4,30 @@ plugins {
 
 group = "es.joshluq.pluginkit.buildlogic"
 
+val agpVersion = "8.13.1"
+val kotlinVersion = "2.2.21"
+val detektVersion = "1.23.8"
+val sonarVersion = "7.1.0.6387"
+val koverVersion = "0.9.3"
+val hiltVersion = "2.57.2"
+val spotlessVersion = "8.1.0"
+
 repositories {
     google()
     mavenCentral()
+    gradlePluginPortal()
 }
 
 dependencies {
-    compileOnly("com.android.tools.build:gradle:8.2.0")
-    compileOnly("org.jetbrains.kotlin:kotlin-gradle-plugin:1.9.22")
+    //noinspection UseTomlInstead
+    implementation("com.android.tools.build:gradle:$agpVersion")
+    implementation("org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlinVersion")
+    implementation("org.jetbrains.kotlin:compose-compiler-gradle-plugin:$kotlinVersion")
+    implementation("io.gitlab.arturbosch.detekt:detekt-gradle-plugin:${detektVersion}")
+    implementation("org.sonarsource.scanner.gradle:sonarqube-gradle-plugin:${sonarVersion}")
+    implementation("org.jetbrains.kotlinx:kover-gradle-plugin:${koverVersion}")
+    implementation("com.google.dagger:hilt-android-gradle-plugin:$hiltVersion")
+    implementation("com.diffplug.spotless:spotless-plugin-gradle:${spotlessVersion}")
 }
 
 gradlePlugin {
@@ -31,6 +47,42 @@ gradlePlugin {
         register("jvmLibrary") {
             id = "pluginkit.jvm.library"
             implementationClass = "es.joshluq.pluginkit.buildlogic.JvmLibraryConventionPlugin"
+        }
+        register("quality") {
+            id = "pluginkit.quality"
+            implementationClass = "es.joshluq.pluginkit.buildlogic.QualityConventionPlugin"
+        }
+        register("formatting") {
+            id = "pluginkit.formatting"
+            implementationClass = "es.joshluq.pluginkit.buildlogic.FormattingConventionPlugin"
+        }
+        register("androidTesting") {
+            id = "pluginkit.android.testing"
+            implementationClass = "es.joshluq.pluginkit.buildlogic.AndroidTestingConventionPlugin"
+        }
+        register("androidNetwork") {
+            id = "pluginkit.android.network"
+            implementationClass = "es.joshluq.pluginkit.buildlogic.AndroidNetworkConventionPlugin"
+        }
+        register("coroutines") {
+            id = "pluginkit.coroutines"
+            implementationClass = "es.joshluq.pluginkit.buildlogic.CoroutinesConventionPlugin"
+        }
+        register("androidHilt") {
+            id = "pluginkit.android.hilt"
+            implementationClass = "es.joshluq.pluginkit.buildlogic.HiltConventionPlugin"
+        }
+        register("androidNavigation") {
+            id = "pluginkit.android.navigation"
+            implementationClass = "es.joshluq.pluginkit.buildlogic.AndroidNavigationConventionPlugin"
+        }
+        register("androidFeature") {
+            id = "pluginkit.android.feature"
+            implementationClass = "es.joshluq.pluginkit.buildlogic.AndroidFeatureConventionPlugin"
+        }
+        register("androidPublishing") {
+            id = "pluginkit.android.publishing"
+            implementationClass = "es.joshluq.pluginkit.buildlogic.AndroidPublishingConventionPlugin"
         }
     }
 }
