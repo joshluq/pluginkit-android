@@ -7,6 +7,20 @@ import org.gradle.api.JavaVersion
 import org.gradle.kotlin.dsl.configure
 import org.gradle.kotlin.dsl.dependencies
 
+/**
+ * Android Library Convention Plugin.
+ *
+ * Configures the base setup for an Android Library module.
+ * Applies the following plugins:
+ * - `com.android.library`
+ * - `org.jetbrains.kotlin.android`
+ *
+ * Sets up:
+ * - SDK versions (compileSdk, minSdk).
+ * - Compilation options (Java 11).
+ * - Consumer proguard rules.
+ * - Core Android dependencies (core-ktx, lifecycle-runtime-ktx).
+ */
 @Suppress("unused")
 class AndroidLibraryConventionPlugin : Plugin<Project> {
     override fun apply(target: Project) {

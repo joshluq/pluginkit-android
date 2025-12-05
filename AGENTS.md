@@ -26,7 +26,7 @@ El proyecto proveerá los siguientes plugins de convención:
 | `pluginkit.formatting` | Formateo de código automático. | Spotless, Ktlint |
 | `pluginkit.jvm.library` | Configuración para módulos puros de Kotlin/Java. | - |
 | `pluginkit.quality` | Herramientas de calidad de código (Detekt, Sonar, Kover). | Configurable vía extensión `pluginkitQuality` |
-| `pluginkit.android.publishing` | Publicación de librerías a Nexus/Artifactory. | - |
+| `pluginkit.android.publishing` | Publicación de librerías a repositorios Maven. | Configurable vía extensión `androidPublishing` |
 
 ## Estructura del Proyecto
 *   **`build-logic`**: Módulo incluido que contiene el código fuente de los plugins (Composite Build).

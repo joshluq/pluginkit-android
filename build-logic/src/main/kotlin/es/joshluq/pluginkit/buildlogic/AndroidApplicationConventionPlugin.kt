@@ -7,6 +7,20 @@ import org.gradle.kotlin.dsl.configure
 import org.gradle.api.JavaVersion
 import org.gradle.kotlin.dsl.dependencies
 
+/**
+ * Android Application Convention Plugin.
+ *
+ * Configures the base setup for an Android Application module.
+ * Applies the following plugins:
+ * - `com.android.application`
+ * - `org.jetbrains.kotlin.android`
+ *
+ * Sets up:
+ * - SDK versions (compileSdk, minSdk, targetSdk).
+ * - Compilation options (Java 11).
+ * - Default build types.
+ * - Core Android dependencies (core-ktx, lifecycle-runtime-ktx).
+ */
 @Suppress("unused")
 class AndroidApplicationConventionPlugin : Plugin<Project> {
     override fun apply(target: Project) {

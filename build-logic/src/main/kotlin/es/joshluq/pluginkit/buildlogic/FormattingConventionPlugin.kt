@@ -5,6 +5,19 @@ import org.gradle.api.Plugin
 import org.gradle.api.Project
 import org.gradle.kotlin.dsl.configure
 
+/**
+ * Formatting Convention Plugin.
+ *
+ * Configures Spotless for code formatting.
+ * Applies:
+ * - `com.diffplug.spotless`
+ *
+ * Configures:
+ * - Kotlin formatting using KtLint.
+ * - Gradle Kotlin DSL script formatting using KtLint.
+ * - Standard rules: trim trailing whitespace, spaces for tabs, end with newline.
+ * - Suppressions for specific KtLint rules.
+ */
 @Suppress("unused")
 class FormattingConventionPlugin : Plugin<Project> {
     override fun apply(target: Project) {

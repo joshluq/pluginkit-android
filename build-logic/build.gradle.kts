@@ -3,7 +3,7 @@ plugins {
     `maven-publish`
 }
 
-group = "es.joshluq.pluginkit.buildlogic"
+group = "es.joshluq.kit.pluginkit"
 version = "0.0.1-SNAPSHOT"
 
 val agpVersion = "8.13.1"
@@ -91,14 +91,6 @@ gradlePlugin {
 
 publishing {
     repositories {
-        maven {
-            name = "NexusOnPremise"
-            url = uri(System.getenv("NEXUS_URL") ?: "http://localhost:8081/repository/android-releases/")
-            isAllowInsecureProtocol = true
-            credentials {
-                username = System.getenv("NEXUS_USER") ?: "admin"
-                password = System.getenv("NEXUS_PASSWORD")
-            }
-        }
+        mavenLocal()
     }
 }

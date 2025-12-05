@@ -7,6 +7,18 @@ import org.gradle.api.Plugin
 import org.gradle.api.Project
 import org.gradle.kotlin.dsl.findByType
 
+/**
+ * Android Compose Convention Plugin.
+ *
+ * Configures Jetpack Compose for Android modules (Application or Library).
+ * Applies:
+ * - `org.jetbrains.kotlin.plugin.compose`
+ *
+ * Configures:
+ * - `buildFeatures.compose = true`
+ * - Compose BOM and related UI libraries (ui, graphics, tooling-preview, material3).
+ * - Debug tooling dependencies.
+ */
 @Suppress("unused")
 class AndroidComposeConventionPlugin : Plugin<Project> {
     override fun apply(target: Project) {

@@ -14,6 +14,19 @@ open class PluginKitQualityExtension {
     var sonarOrganization: String? = null
 }
 
+/**
+ * Quality Convention Plugin.
+ *
+ * Configures code quality tools: Detekt, SonarQube, and Kover.
+ * Applies:
+ * - `io.gitlab.arturbosch.detekt`
+ * - `org.sonarqube`
+ * - `org.jetbrains.kotlinx.kover`
+ *
+ * Configures:
+ * - Detekt with a default config file and auto-correction.
+ * - SonarQube properties via `pluginkitQuality` extension.
+ */
 @Suppress("unused")
 class QualityConventionPlugin : Plugin<Project> {
     override fun apply(target: Project) {

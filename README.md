@@ -32,7 +32,7 @@ El proyecto provee los siguientes plugins de convención:
 | `pluginkit.formatting` | Formateo de código automático. | Spotless, Ktlint |
 | `pluginkit.jvm.library` | Configuración para módulos puros de Kotlin/Java. | - |
 | `pluginkit.quality` | Herramientas de calidad de código (Detekt, Sonar, Kover). | Configurable vía extensión `pluginkitQuality` |
-| `pluginkit.android.publishing` | Publicación de librerías a Nexus/Artifactory. | - |
+| `pluginkit.android.publishing` | Publicación de librerías a repositorios Maven. | Configurable vía extensión `androidPublishing` |
 
 
 ## 🚀 Modo de Uso
@@ -62,6 +62,14 @@ plugins {
 android {
     namespace = "es.joshluq.pluginkit.mylibrary"
 }
+
+// Configuración de la publicación (Opcional)
+androidPublishing {
+    repoUrl = "https://nexus.example.com/repository/maven-releases/"
+    repoUser = System.getenv("REPO_USER")
+    repoPassword = System.getenv("REPO_PASSWORD")
+    artifactId = "my-library-name" // Opcional, por defecto usa el nombre del módulo
+}
 ```
 Para publicar, simplemente ejecuta `./gradlew :mylibrary:publish`.
 
@@ -79,6 +87,19 @@ pluginkitQuality {
     sonarToken = System.getenv("SONAR_TOKEN")
 }
 ```
+
+---
+
+## 📦 Desarrollo y Publicación Local
+
+Para probar cambios en los plugins localmente o utilizarlos en otros proyectos en tu máquina:
+
+1.  Publica los plugins a tu repositorio Maven Local:
+    ```bash
+    ./gradlew :build-logic:publishToMavenLocal
+    ```
+2.  En el proyecto consumidor, añade `mavenLocal()` al bloque `pluginManagement` en `settings.gradle.kts`.
+3.  Utiliza la versión snapshot (ej. `0.0.1-SNAPSHOT`).
 
 ---
 

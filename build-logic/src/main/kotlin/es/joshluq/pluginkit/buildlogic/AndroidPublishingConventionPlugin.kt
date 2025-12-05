@@ -20,6 +20,18 @@ open class AndroidPublishingExtension {
     var artifactId: String? = null
 }
 
+/**
+ * Android Publishing Convention Plugin.
+ *
+ * Configures Maven publishing for Android Library modules.
+ * Applies:
+ * - `maven-publish`
+ *
+ * Configures:
+ * - Publication of the 'release' component with sources jar.
+ * - POM generation with metadata (groupId, artifactId, version).
+ * - Target repository configuration via `androidPublishing` extension.
+ */
 @Suppress("unused")
 class AndroidPublishingConventionPlugin : Plugin<Project> {
     override fun apply(target: Project) {
