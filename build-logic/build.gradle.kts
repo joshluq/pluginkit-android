@@ -1,8 +1,10 @@
 plugins {
     `kotlin-dsl`
+    `maven-publish`
 }
 
 group = "es.joshluq.pluginkit.buildlogic"
+version = "0.0.1-SNAPSHOT"
 
 val agpVersion = "8.13.1"
 val kotlinVersion = "2.2.21"
@@ -83,6 +85,20 @@ gradlePlugin {
         register("androidPublishing") {
             id = "pluginkit.android.publishing"
             implementationClass = "es.joshluq.pluginkit.buildlogic.AndroidPublishingConventionPlugin"
+        }
+    }
+}
+
+publishing {
+    repositories {
+        maven {
+            name = "NexusOnPremise"
+            url = uri(System.getenv("NEXUS_URL") ?: "http://localhost:8081/repository/android-releases/")
+            isAllowInsecureProtocol = true
+            credentials {
+                username = System.getenv("NEXUS_USER") ?: "admin"
+                password = System.getenv("NEXUS_PASSWORD")
+            }
         }
     }
 }
