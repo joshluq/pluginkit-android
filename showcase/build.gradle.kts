@@ -1,5 +1,3 @@
-import org.jetbrains.kotlin.gradle.dsl.JvmTarget
-
 plugins {
     alias(libs.plugins.pluginkit.android.application)
     alias(libs.plugins.pluginkit.android.compose)
@@ -25,12 +23,6 @@ android {
         applicationId = "es.joshluq.pluginkit"
         versionCode = 1
         versionName = "1.0"
-    }
-
-    kotlin {
-        compilerOptions {
-            jvmTarget = JvmTarget.JVM_11
-        }
     }
 }
 

@@ -19,6 +19,7 @@ navigationCompose = "2.9.6"
 kotlinxSerialization = "1.9.0"
 kotlinxCoroutines = "1.10.2"
 jackson = "2.20.1"
+pluginVersion = "0.0.1-SNAPSHOT"
 
 [libraries]
 androidx-core-ktx = { group = "androidx.core", name = "core-ktx", version.ref = "coreKtx" }
@@ -92,6 +93,7 @@ navigation = [
 [plugins]
 android-application = { id = "com.android.application", version.ref = "agp" }
 kotlin-android = { id = "org.jetbrains.kotlin.android", version.ref = "kotlin" }
+android-library = { id = "com.android.library", version.ref = "agp" }
 kotlin-compose = { id = "org.jetbrains.kotlin.plugin.compose", version.ref = "kotlin" }
 kotlin-kapt = { id = "org.jetbrains.kotlin.kapt", version.ref = "kotlin" }
 jetbrains-kotlin-jvm = { id = "org.jetbrains.kotlin.jvm", version.ref = "jetbrainsKotlinJvm" }
@@ -99,16 +101,16 @@ hilt = { id = "com.google.dagger.hilt.android", version.ref = "hilt" }
 spotless = { id = "com.diffplug.spotless", version.ref = "spotless" }
 kotlin-serialization = { id = "org.jetbrains.kotlin.plugin.serialization", version.ref = "kotlin" }
 
-pluginkit-android-application = { id = "pluginkit.android.application" }
-pluginkit-android-compose = { id = "pluginkit.android.compose" }
-pluginkit-android-library = { id = "pluginkit.android.library" }
-pluginkit-jvm-library = { id = "pluginkit.jvm.library" }
-pluginkit-quality = { id = "pluginkit.quality" }
-pluginkit-android-testing = { id = "pluginkit.android.testing" }
-pluginkit-android-network = { id = "pluginkit.android.network" }
-pluginkit-coroutines = { id = "pluginkit.coroutines" }
-pluginkit-android-hilt = { id = "pluginkit.android.hilt" }
-pluginkit-android-navigation = { id = "pluginkit.android.navigation" }
-pluginkit-formatting = { id = "pluginkit.formatting" }
-pluginkit-android-feature = { id = "pluginkit.android.feature" }
-pluginkit-android-publishing = { id = "pluginkit.android.publishing" }
+pluginkit-android-application = { id = "pluginkit.android.application", version.ref = "pluginVersion"}
+pluginkit-android-compose = { id = "pluginkit.android.compose", version.ref = "pluginVersion" }
+pluginkit-android-library = { id = "pluginkit.android.library", version.ref = "pluginVersion" }
+pluginkit-jvm-library = { id = "pluginkit.jvm.library", version.ref = "pluginVersion" }
+pluginkit-quality = { id = "pluginkit.quality", version.ref = "pluginVersion" }
+pluginkit-android-testing = { id = "pluginkit.android.testing", version.ref = "pluginVersion" }
+pluginkit-android-network = { id = "pluginkit.android.network", version.ref = "pluginVersion" }
+pluginkit-coroutines = { id = "pluginkit.coroutines", version.ref = "pluginVersion" }
+pluginkit-android-hilt = { id = "pluginkit.android.hilt", version.ref = "pluginVersion" }
+pluginkit-android-navigation = { id = "pluginkit.android.navigation", version.ref = "pluginVersion" }
+pluginkit-formatting = { id = "pluginkit.formatting", version.ref = "pluginVersion" }
+pluginkit-android-feature = { id = "pluginkit.android.feature", version.ref = "pluginVersion" }
+pluginkit-android-publishing = { id = "pluginkit.android.publishing", version.ref = "pluginVersion" }

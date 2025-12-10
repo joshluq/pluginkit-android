@@ -18,10 +18,15 @@ dependencyResolutionManagement {
         google()
         mavenCentral()
     }
+    versionCatalogs {
+        create("libs") {
+            from(files("gradle-catalog/libs.versions.toml"))
+        }
+    }
 }
 
 rootProject.name = "Pluginkit"
 include(":showcase")
 include(":mylibrary")
-
+include(":gradle-catalog")
 includeBuild("build-logic")
