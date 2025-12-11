@@ -3,7 +3,7 @@ plugins {
     `maven-publish`
 }
 
-group = "es.joshluq.kit.pluginkit"
+group = "es.joshluq.kit"
 version = "0.0.1-SNAPSHOT"
 
 catalog {
