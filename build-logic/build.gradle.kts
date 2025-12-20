@@ -10,7 +10,7 @@ val agpVersion = "8.13.2"
 val kotlinVersion = "2.2.21"
 val detektVersion = "1.23.8"
 val sonarVersion = "7.1.0.6387"
-val koverVersion = "0.9.3"
+val koverVersion = "0.9.4"
 val hiltVersion = "2.57.2"
 val spotlessVersion = "8.1.0"
 

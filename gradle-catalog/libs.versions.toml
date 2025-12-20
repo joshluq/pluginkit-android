@@ -65,7 +65,8 @@ compose = [
 ]
 testing-unit = [
     "junit",
-    "mockk"
+    "mockk",
+    "kotlinx-coroutines-test"
 ]
 testing-android = [
     "androidx-junit",
