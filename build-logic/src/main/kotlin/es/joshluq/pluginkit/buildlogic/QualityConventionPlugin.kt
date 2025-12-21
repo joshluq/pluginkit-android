@@ -1,11 +1,14 @@
 package es.joshluq.pluginkit.buildlogic
 
+import io.gitlab.arturbosch.detekt.Detekt
+import io.gitlab.arturbosch.detekt.extensions.DetektExtension
 import org.gradle.api.Plugin
 import org.gradle.api.Project
-import org.gradle.kotlin.dsl.create
 import org.gradle.kotlin.dsl.configure
+import org.gradle.kotlin.dsl.create
+import org.gradle.kotlin.dsl.dependencies
+import org.gradle.kotlin.dsl.withType
 import org.sonarqube.gradle.SonarExtension
-import io.gitlab.arturbosch.detekt.extensions.DetektExtension
 
 open class PluginKitQualityExtension {
     var sonarHost: String? = null
@@ -38,12 +41,20 @@ class QualityConventionPlugin : Plugin<Project> {
             pluginManager.apply("org.jetbrains.kotlinx.kover")
 
             extensions.configure<DetektExtension> {
-                toolVersion = "1.23.7"
+                toolVersion = "1.23.8"
                 source.setFrom(files("src/main/java", "src/main/kotlin"))
                 config.setFrom(files("${project.rootDir}/config/detekt/detekt.yml"))
                 buildUponDefaultConfig = true
                 allRules = false
                 autoCorrect = true
+                baseline = file("$projectDir/config/baseline.xml")
+            }
+
+            tasks.withType<Detekt>().configureEach {
+                reports {
+                    html.required.set(true)
+                    sarif.required.set(true)
+                }
             }
 
             afterEvaluate {
@@ -58,6 +69,10 @@ class QualityConventionPlugin : Plugin<Project> {
                         qualityExtension.sonarOrganization?.let { property("sonar.organization", it) }
                     }
                 }
+            }
+
+            dependencies {
+                add("detektPlugins", libs.findLibrary("detekt-formatting").get())
             }
         }
     }
