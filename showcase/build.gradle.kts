@@ -10,10 +10,8 @@ plugins {
 }
 
 pluginkitQuality {
-    sonarHost = "https://your-sonar-instance.com"
-    sonarProjectKey = "your-project-key"
-    sonarToken = System.getenv("SONAR_TOKEN")
-    sonarOrganization = "your-organization"
+    sonarHost.set("https://your-sonar-instance.com")
+    sonarProjectKey.set("your-project-key")
 }
 
 android {
