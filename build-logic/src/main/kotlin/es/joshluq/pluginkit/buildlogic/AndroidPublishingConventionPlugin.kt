@@ -59,18 +59,14 @@ class AndroidPublishingConventionPlugin : Plugin<Project> {
                     publications {
                         create<MavenPublication>("release") {
                             val releaseComponent = components.findByName("release")
-                            if (releaseComponent != null) {
-                                from(releaseComponent)
-                            } else {
-                                println("AndroidPublishingConventionPlugin: 'release' component not found. Make sure to apply this plugin in an Android Library module.")
-                            }
+                            from(releaseComponent)
 
                             groupId = groupIdValue
                             artifactId = artifactIdValue
                             version = versionValue
 
                             pom {
-                                name.set(artifactIdValue)
+                                name.set(artifactIdValue ?:"Android Library" )
                                 description.set("Android library published automatically")
                             }
                         }
@@ -81,11 +77,10 @@ class AndroidPublishingConventionPlugin : Plugin<Project> {
                             maven {
                                 name = repoNameValue
                                 url = URI.create(repoUrlValue)
-                                isAllowInsecureProtocol = true
 
                                 credentials {
-                                    username = repoUserValue
-                                    password = repoPasswordValue
+                                    username = repoUserValue ?: ""
+                                    password = repoPasswordValue ?: ""
                                 }
 
                             }

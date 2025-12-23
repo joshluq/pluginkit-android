@@ -14,9 +14,9 @@ import org.gradle.kotlin.dsl.withType
 import org.sonarqube.gradle.SonarExtension
 
 interface PluginKitQualityExtension {
-    var sonarHost: Property<String>
-    var sonarProjectKey: Property<String>
-    var koverExclusions: ListProperty<String>
+    val sonarHost: Property<String>
+    val sonarProjectKey: Property<String>
+    val koverExclusions: ListProperty<String>
 }
 
 /**
@@ -75,7 +75,7 @@ class QualityConventionPlugin : Plugin<Project> {
                     reports {
                         filters {
                             excludes {
-                                classes(qualityExtension.koverExclusions.getOrElse(emptyList()))
+                                classes(qualityExtension.koverExclusions.getOrElse(listOf()))
                             }
                         }
                     }
