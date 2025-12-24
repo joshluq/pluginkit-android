@@ -35,4 +35,4 @@ jobs:
           GITHUB_ACTOR: ${{ github.actor }}
         run: |
           chmod +x gradlew
-          ./gradlew :build-logic:publish
+          ./gradlew :build-logic:publish :gradle-catalog:publish

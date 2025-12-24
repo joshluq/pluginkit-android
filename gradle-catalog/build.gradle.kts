@@ -20,9 +20,26 @@ publishing {
             groupId = project.group.toString()
             artifactId = "catalog"
             version = project.version.toString()
+
+            pom {
+                name.set("Shared Gradle Catalog")
+                url.set("https://github.com/${System.getenv("GITHUB_REPOSITORY")}")
+                scm {
+                    connection.set("scm:git:github.com/${System.getenv("GITHUB_REPOSITORY")}.git")
+                    developerConnection.set("scm:git:ssh://github.com/${System.getenv("GITHUB_REPOSITORY")}.git")
+                    url.set("https://github.com/${System.getenv("GITHUB_REPOSITORY")}")
+                }
+            }
         }
     }
     repositories {
-        mavenLocal()
+        maven {
+            name = "GitHubPackages"
+            url = uri("https://maven.pkg.github.com/${System.getenv("GITHUB_REPOSITORY")}")
+            credentials {
+                username = System.getenv("GITHUB_ACTOR")
+                password = System.getenv("GITHUB_TOKEN")
+            }
+        }
     }
 }
