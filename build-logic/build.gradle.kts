@@ -4,7 +4,7 @@ plugins {
 }
 
 group = "es.joshluq.kit.pluginkit"
-version = "0.0.1-SNAPSHOT"
+version = "0.0.2-SNAPSHOT"
 
 val agpVersion = "8.13.2"
 val kotlinVersion = "2.3.0"
@@ -13,6 +13,7 @@ val sonarVersion = "7.1.0.6387"
 val koverVersion = "0.9.4"
 val hiltVersion = "2.57.2"
 val spotlessVersion = "8.1.0"
+val kspVersion = "2.3.3"
 
 repositories {
     google()
@@ -30,6 +31,7 @@ dependencies {
     implementation("org.jetbrains.kotlinx:kover-gradle-plugin:${koverVersion}")
     implementation("com.google.dagger:hilt-android-gradle-plugin:$hiltVersion")
     implementation("com.diffplug.spotless:spotless-plugin-gradle:${spotlessVersion}")
+    implementation("com.google.devtools.ksp:com.google.devtools.ksp.gradle.plugin:$kspVersion")
 }
 
 gradlePlugin {

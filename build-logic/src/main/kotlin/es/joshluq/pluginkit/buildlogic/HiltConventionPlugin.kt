@@ -9,25 +9,25 @@ import org.gradle.kotlin.dsl.dependencies
  *
  * Configures Dependency Injection using Dagger Hilt.
  * Applies:
- * - `org.jetbrains.kotlin.kapt`
+ * - `com.google.devtools.ksp`
  * - `com.google.dagger.hilt.android`
  *
  * Dependencies:
  * - `hilt-android` (implementation)
- * - `hilt-compiler` (kapt)
+ * - `hilt-compiler` (ksp)
  */
 @Suppress("unused")
 class HiltConventionPlugin : Plugin<Project> {
     override fun apply(target: Project) {
         with(target) {
             with(pluginManager) {
-                apply("org.jetbrains.kotlin.kapt")
+                apply("com.google.devtools.ksp")
                 apply("com.google.dagger.hilt.android")
             }
 
             dependencies {
                 add("implementation", libs.findLibrary("hilt-android").get())
-                add("kapt", libs.findLibrary("hilt-compiler").get())
+                add("ksp", libs.findLibrary("hilt-compiler").get())
             }
         }
     }
