@@ -1,3 +1,5 @@
+import com.android.build.api.dsl.ApplicationExtension
+
 plugins {
     alias(libs.plugins.pluginkit.android.application)
     alias(libs.plugins.pluginkit.android.compose)
@@ -14,7 +16,7 @@ pluginkitQuality {
     sonarProjectKey.set("your-project-key")
 }
 
-android {
+configure<ApplicationExtension> {
     namespace = "es.joshluq.pluginkit"
 
     defaultConfig {
