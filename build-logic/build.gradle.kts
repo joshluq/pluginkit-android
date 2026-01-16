@@ -11,9 +11,9 @@ val kotlinVersion = "2.3.0"
 val detektVersion = "1.23.8"
 val sonarVersion = "7.1.0.6387"
 val koverVersion = "0.9.4"
-val hiltVersion = "2.57.2"
+val hiltVersion = "2.58"
 val spotlessVersion = "8.1.0"
-val kspVersion = "2.3.3"
+val kspVersion = "2.3.4"
 
 repositories {
     google()
