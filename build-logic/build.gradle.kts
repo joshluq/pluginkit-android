@@ -6,7 +6,7 @@ plugins {
 group = "es.joshluq.kit.pluginkit"
 version = "0.0.3-SNAPSHOT"
 
-val agpVersion = "8.13.2"
+val agpVersion = "9.0.0"
 val kotlinVersion = "2.3.0"
 val detektVersion = "1.23.8"
 val sonarVersion = "7.1.0.6387"

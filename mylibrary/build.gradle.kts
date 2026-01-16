@@ -1,3 +1,4 @@
+import com.android.build.api.dsl.LibraryExtension
 import org.jetbrains.kotlin.gradle.dsl.JvmTarget
 
 plugins {
@@ -10,14 +11,8 @@ plugins {
     alias(libs.plugins.pluginkit.android.publishing)
 }
 
-android {
+configure<LibraryExtension> {
     namespace = "es.joshluq.pluginkit.mylibrary"
-
-    kotlin {
-        compilerOptions {
-            jvmTarget = JvmTarget.JVM_11
-        }
-    }
 }
 
 dependencies {

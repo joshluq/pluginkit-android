@@ -5,6 +5,7 @@ import com.android.build.api.dsl.CommonExtension
 import com.android.build.api.dsl.LibraryExtension
 import org.gradle.api.Plugin
 import org.gradle.api.Project
+import org.gradle.kotlin.dsl.dependencies
 import org.gradle.kotlin.dsl.findByType
 
 /**
@@ -28,7 +29,21 @@ class AndroidComposeConventionPlugin : Plugin<Project> {
             val extension = extensions.findByType<ApplicationExtension>()
                 ?: extensions.findByType<LibraryExtension>()
             
-            (extension as? CommonExtension<*, *, *, *, *, *>)?.configureCompose(this)
+            (extension as? CommonExtension)?.apply {
+
+                buildFeatures.compose = true
+
+                target.dependencies {
+                    val bom = project.libs.findLibrary("androidx-compose-bom").get()
+                    add("implementation", enforcedPlatform(bom))
+                    add("androidTestImplementation", platform(bom))
+
+                    add("implementation", project.libs.findBundle("compose").get())
+
+                    add("debugImplementation", project.libs.findLibrary("androidx-compose-ui-tooling").get())
+                    add("debugImplementation", project.libs.findLibrary("androidx-compose-ui-test-manifest").get())
+                }
+            }
         }
     }
 }

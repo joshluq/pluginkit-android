@@ -1,6 +1,6 @@
 package es.joshluq.pluginkit.buildlogic
 
-import com.android.build.gradle.LibraryExtension
+import com.android.build.api.dsl.LibraryExtension
 import org.gradle.api.Plugin
 import org.gradle.api.Project
 import org.gradle.api.publish.PublishingExtension
@@ -39,6 +39,7 @@ class AndroidPublishingConventionPlugin : Plugin<Project> {
             val extension = extensions.create("androidPublishing", AndroidPublishingExtension::class.java)
 
             pluginManager.apply("maven-publish")
+
             extensions.configure<LibraryExtension> {
                 publishing {
                     singleVariant("release") {
@@ -46,6 +47,7 @@ class AndroidPublishingConventionPlugin : Plugin<Project> {
                     }
                 }
             }
+
             afterEvaluate {
                 val repoNameValue = extension.repoName ?: "MavenRepo"
                 val repoUrlValue = extension.repoUrl
@@ -66,7 +68,7 @@ class AndroidPublishingConventionPlugin : Plugin<Project> {
                             version = versionValue
 
                             pom {
-                                name.set(artifactIdValue ?:"Android Library" )
+                                name.set(artifactIdValue ?: "Android Library")
                                 description.set("Android library published automatically")
                             }
                         }
@@ -82,7 +84,6 @@ class AndroidPublishingConventionPlugin : Plugin<Project> {
                                     username = repoUserValue ?: ""
                                     password = repoPasswordValue ?: ""
                                 }
-
                             }
                         }
                     }
