@@ -11,16 +11,24 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
+import dagger.hilt.android.AndroidEntryPoint
 import es.joshluq.pluginkit.ui.theme.PluginkitTheme
 import es.joshluq.pluginkit.mylibrary.GreetingProvider
+import javax.inject.Inject
 
+@AndroidEntryPoint
 class MainActivity : ComponentActivity() {
+
+    @Inject
+    lateinit var stringProvider: StringProvider
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
 
         val greetingProvider = GreetingProvider()
-        val message = greetingProvider.getGreeting()
+        // Combining library greeting and injected string
+        val message = "${greetingProvider.getGreeting()} & ${stringProvider.getString()}"
         
         setContent {
             PluginkitTheme {

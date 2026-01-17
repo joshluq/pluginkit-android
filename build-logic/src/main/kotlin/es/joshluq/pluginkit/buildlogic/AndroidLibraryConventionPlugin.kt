@@ -15,7 +15,6 @@ import org.jetbrains.kotlin.gradle.dsl.KotlinAndroidProjectExtension
  * Configures the base setup for an Android Library module.
  * Applies the following plugins:
  * - `com.android.library`
- * - `org.jetbrains.kotlin.android`
  *
  * Sets up:
  * - SDK versions (compileSdk, minSdk).
@@ -29,7 +28,6 @@ class AndroidLibraryConventionPlugin : Plugin<Project> {
         with(target) {
             with(pluginManager) {
                 apply("com.android.library")
-                apply("org.jetbrains.kotlin.android")
             }
 
             extensions.configure<LibraryExtension> {

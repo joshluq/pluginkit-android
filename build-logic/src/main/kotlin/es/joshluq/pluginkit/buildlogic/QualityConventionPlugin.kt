@@ -66,8 +66,8 @@ class QualityConventionPlugin : Plugin<Project> {
                         property("sonar.sourceEncoding", "UTF-8")
                         property("sonar.verbose", "true")
 
-                        qualityExtension.sonarHost.orNull.let { property("sonar.host.url", it) }
-                        qualityExtension.sonarProjectKey.orNull.let { property("sonar.projectKey", it) }
+                        qualityExtension.sonarHost.orNull?.let { property("sonar.host.url", it) }
+                        qualityExtension.sonarProjectKey.orNull?.let { property("sonar.projectKey", it) }
                     }
                 }
 

@@ -15,7 +15,6 @@ import org.jetbrains.kotlin.gradle.dsl.KotlinAndroidProjectExtension
  * Configures the base setup for an Android Application module.
  * Applies the following plugins:
  * - `com.android.application`
- * - `org.jetbrains.kotlin.android`
  *
  * Sets up:
  * - SDK versions (compileSdk, minSdk, targetSdk).
@@ -29,7 +28,6 @@ class AndroidApplicationConventionPlugin : Plugin<Project> {
         with(target) {
             with(pluginManager) {
                 apply("com.android.application")
-                apply("org.jetbrains.kotlin.android")
             }
 
             extensions.configure<ApplicationExtension> {

@@ -19,7 +19,7 @@ El proyecto proveerá los siguientes plugins de convención:
 | `pluginkit.android.compose` | Configuración específica para Jetpack Compose. | BOM, UI, Graphics, Tooling, Material3 |
 | `pluginkit.android.testing` | Configuración unificada de pruebas. | JUnit, MockK, Espresso, Compose UI Test |
 | `pluginkit.android.network` | Configuración para capa de red. | Retrofit, OkHttp, Jackson Converter |
-| `pluginkit.android.hilt` | Configuración de Inyección de Dependencias. | Kapt, Hilt Android, Hilt Compiler |
+| `pluginkit.android.hilt` | Configuración de Inyección de Dependencias. | KSP, Hilt Android, Hilt Compiler |
 | `pluginkit.android.navigation` | Configuración de Navegación y Serialización. | Navigation Compose, Hilt Nav, Kotlinx Serialization |
 | `pluginkit.coroutines` | Configuración de programación asíncrona. | Kotlinx Coroutines (Core & Android) |
 | `pluginkit.android.feature` | **Mega-Plugin** para módulos de Feature. | Library + Hilt + Compose + Coroutines + Navigation |
@@ -35,10 +35,12 @@ El proyecto proveerá los siguientes plugins de convención:
 *   **`mylibrary`**: Módulo de librería de ejemplo para validar la configuración de `pluginkit.android.library`.
 
 ## Tecnologías
+*   Gradle 9.1
+*   Android Gradle Plugin 9.0
 *   Gradle Kotlin DSL
 *   Gradle Version Catalogs (TOML)
 *   Composite Builds
 *   Detekt, SonarQube, Kover, MockK, Spotless (Ktlint)
-*   Retrofit, OkHttp, Hilt, Coroutines
+*   Retrofit, OkHttp, Hilt, Coroutines, KSP
 *   Navigation Compose, Kotlin Serialization
 *   Maven Publish

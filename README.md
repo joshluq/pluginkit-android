@@ -25,7 +25,7 @@ El proyecto provee los siguientes plugins de convención:
 | `pluginkit.android.compose` | Configuración específica para Jetpack Compose. | BOM, UI, Graphics, Tooling, Material3 |
 | `pluginkit.android.testing` | Configuración unificada de pruebas. | JUnit, MockK, Espresso, Compose UI Test |
 | `pluginkit.android.network` | Configuración para capa de red. | Retrofit, OkHttp, Jackson Converter |
-| `pluginkit.android.hilt` | Configuración de Inyección de Dependencias. | Kapt, Hilt Android, Hilt Compiler |
+| `pluginkit.android.hilt` | Configuración de Inyección de Dependencias. | KSP, Hilt Android, Hilt Compiler |
 | `pluginkit.android.navigation` | Configuración de Navegación y Serialización. | Navigation Compose, Hilt Nav, Kotlinx Serialization |
 | `pluginkit.coroutines` | Configuración de programación asíncrona. | Kotlinx Coroutines (Core & Android) |
 | `pluginkit.android.feature` | **Mega-Plugin** para módulos de Feature. | Library + Hilt + Compose + Coroutines + Navigation |
@@ -59,7 +59,8 @@ plugins {
     alias(libs.plugins.pluginkit.android.publishing)
 }
 
-android {
+// Configuración del módulo (usando el nuevo DSL de AGP 9.0 si es necesario)
+configure<com.android.build.api.dsl.LibraryExtension> {
     namespace = "es.joshluq.pluginkit.mylibrary"
 }
 
@@ -99,24 +100,26 @@ Para probar cambios en los plugins localmente o utilizarlos en otros proyectos e
     ./gradlew :build-logic:publishToMavenLocal
     ```
 2.  En el proyecto consumidor, añade `mavenLocal()` al bloque `pluginManagement` en `settings.gradle.kts`.
-3.  Utiliza la versión snapshot (ej. `0.0.1-SNAPSHOT`).
+3.  Utiliza la versión snapshot (ej. `0.0.3-SNAPSHOT`).
 
 ---
 
 ## 🏗️ Estructura del Proyecto
 
 -   **`build-logic/`**: Contiene el código fuente de todos los Convention Plugins.
--   **`gradle/libs.versions.toml`**: Es el catálogo de versiones de Gradle, nuestra única fuente de verdad para las dependencias.
+-   **`gradle-catalog/libs.versions.toml`**: Es el catálogo de versiones de Gradle, nuestra única fuente de verdad para las dependencias.
 -   **`showcase/`**: Módulo de aplicación Android que sirve como ejemplo de consumo de todos los plugins.
 -   **`mylibrary/`**: Módulo de librería Android que demuestra el uso del plugin `pluginkit.android.library`.
 -   **`config/`**: Contiene archivos de configuración compartidos, como el `detekt.yml`.
 
 ## 🛠️ Stack Tecnológico
 
+-   **Gradle 9.1**
+-   **Android Gradle Plugin 9.0**
 -   Gradle Kotlin DSL
 -   Gradle Version Catalogs (TOML)
 -   Composite Builds
 -   **Calidad de Código**: Detekt, SonarQube, Kover, Spotless (Ktlint)
 -   **Testing**: JUnit, MockK, Espresso
--   **Infraestructura**: Hilt, Retrofit, Coroutines, Navigation, Serialization
+-   **Infraestructura**: Hilt (KSP), Retrofit, Coroutines, Navigation, Serialization
 -   **Publicación**: Maven Publish
