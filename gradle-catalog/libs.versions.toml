@@ -21,7 +21,7 @@ kotlinxSerialization = "1.10.0"
 kotlinxCoroutines = "1.10.2"
 jackson = "2.21.0"
 ksp = "2.3.4"
-pluginVersion = "1.1.0-SNAPSHOT"
+pluginVersion = "1.1.0"
 kitVersion = "1.0.0"
 
 [libraries]
