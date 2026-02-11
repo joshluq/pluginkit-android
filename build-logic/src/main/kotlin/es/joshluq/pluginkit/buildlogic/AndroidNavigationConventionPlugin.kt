@@ -9,7 +9,7 @@ import org.gradle.kotlin.dsl.dependencies
  *
  * Configures Navigation support, typically using Jetpack Navigation Compose.
  * Applies:
- * - `org.jetbrains.kotlin.plugin.serialization` (often used for type-safe navigation)
+ * - `org.jetbrains.kotlin.plugin.serialization` often used for type-safe navigation
  *
  * Dependencies:
  * - `navigation` bundle (containing navigation-compose, hilt-navigation-compose, kotlinx-serialization, etc.)

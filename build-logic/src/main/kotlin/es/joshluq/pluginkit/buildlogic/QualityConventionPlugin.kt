@@ -29,7 +29,7 @@ interface PluginKitQualityExtension {
  * - `org.jetbrains.kotlinx.kover`
  *
  * Configures:
- * - Detekt with a default config file and auto-correction.
+ * - Detekt with a default config file and autocorrection.
  * - SonarQube properties via `pluginkitQuality` extension.
  * - Kover with custom exclusions.
  */
