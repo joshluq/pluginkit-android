@@ -4,7 +4,7 @@ plugins {
 }
 
 group = "es.joshluq.kit.pluginkit"
-version = "1.2.0"
+version = "1.3.0-SNAPSHOT"
 
 val agpVersion = "9.1.1"
 val kotlinVersion = "2.3.20"
@@ -87,6 +87,10 @@ gradlePlugin {
         register("androidPublishing") {
             id = "pluginkit.android.publishing"
             implementationClass = "es.joshluq.pluginkit.buildlogic.AndroidPublishingConventionPlugin"
+        }
+        register("androidWork") {
+            id = "pluginkit.android.work"
+            implementationClass = "es.joshluq.pluginkit.buildlogic.AndroidWorkConventionPlugin"
         }
     }
 }
