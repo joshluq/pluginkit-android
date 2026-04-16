@@ -39,7 +39,7 @@ class FormattingConventionPlugin : Plugin<Project> {
                         shortCode = "standard:function-naming"
                     }
                     trimTrailingWhitespace()
-                    leadingTabsToSpaces()
+                    leadingTabsToSpaces(4)
                     endWithNewline()
                 }
                 kotlinGradle {
