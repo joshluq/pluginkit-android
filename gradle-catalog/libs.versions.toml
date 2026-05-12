@@ -23,7 +23,7 @@ kotlinxSerialization = "1.11.0"
 kotlinxCoroutines = "1.10.2"
 jackson = "2.21.3"
 ksp = "2.3.4"
-pluginVersion = "1.5.0-SNAPSOT"
+pluginVersion = "1.5.0-SNAPSHOT"
 kitVersion = "1.1.0"
 
 [libraries]
