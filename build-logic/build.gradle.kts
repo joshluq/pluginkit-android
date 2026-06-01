@@ -4,7 +4,7 @@ plugins {
 }
 
 group = "es.joshluq.kit.pluginkit"
-version = "1.5.0"
+version = "1.6.0-SNAPSHOT"
 
 val agpVersion = "9.2.1"
 val kotlinVersion = "2.3.21"
@@ -12,7 +12,7 @@ val detektVersion = "1.23.8"
 val sonarVersion = "7.1.0.6387"
 val koverVersion = "0.9.8"
 val hiltVersion = "2.59.2"
-val spotlessVersion = "8.5.1"
+val spotlessVersion = "8.6.0"
 val kspVersion = "2.3.4"
 
 repositories {
