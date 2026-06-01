@@ -35,7 +35,7 @@ class AndroidComposeConventionPlugin : Plugin<Project> {
 
                 target.dependencies {
                     val bom = project.libs.findLibrary("androidx-compose-bom").get()
-                    add("implementation", enforcedPlatform(bom))
+                    add("implementation", platform(bom))
                     add("androidTestImplementation", platform(bom))
 
                     add("implementation", project.libs.findBundle("compose").get())

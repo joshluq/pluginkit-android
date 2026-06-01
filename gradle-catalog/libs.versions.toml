@@ -8,23 +8,23 @@ espressoCore = "3.7.0"
 lifecycleRuntimeKtx = "2.10.0"
 activityCompose = "1.13.0"
 composeBom = "2026.05.01"
-mockk = "1.14.9"
+mockk = "1.14.11"
 jetbrainsKotlinJvm = "2.3.21"
 hilt = "2.59.2"
 work = "2.11.2"
 hiltWork = "1.3.0"
 hiltNavigationCompose = "1.3.0"
 retrofit = "3.0.0"
-spotless = "8.5.1"
+spotless = "8.6.0"
 detektVersion = "1.23.8"
 okhttp = "5.3.2"
 navigationCompose = "2.9.8"
 kotlinxSerialization = "1.11.0"
 kotlinxCoroutines = "1.11.0"
-jackson = "2.21.3"
+jackson = "2.22.0"
 ksp = "2.3.4"
-pluginVersion = "1.5.0"
-kitVersion = "1.1.0"
+pluginVersion = "1.6.0-SNAPSHOT"
+kitVersion = "1.2.0"
 tink = "1.21.0"
 datastore = "1.2.1"
 
@@ -78,6 +78,7 @@ tink-android = { group = "com.google.crypto.tink", name = "tink-android", versio
 [bundles]
 compose = [
     "androidx-activity-compose",
+    "androidx-material-icons-extended",
     "androidx-compose-ui",
     "androidx-compose-ui-graphics",
     "androidx-compose-ui-tooling-preview",
