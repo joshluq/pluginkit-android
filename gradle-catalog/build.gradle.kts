@@ -4,7 +4,7 @@ plugins {
 }
 
 group = "es.joshluq.kit"
-version = "1.6.0-SNAPSHOT"
+version = "1.6.0"
 
 catalog {
     versionCatalog {
