@@ -4,17 +4,17 @@ import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
-import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.padding
-import androidx.compose.material3.Scaffold
-import androidx.compose.material3.Text
-import androidx.compose.runtime.Composable
-import androidx.compose.ui.Modifier
-import androidx.compose.ui.tooling.preview.Preview
 import dagger.hilt.android.AndroidEntryPoint
 import es.joshluq.pluginkit.ui.theme.PluginkitTheme
-import es.joshluq.pluginkit.mylibrary.GreetingProvider
 import javax.inject.Inject
+import androidx.compose.animation.slideInHorizontally
+import androidx.compose.animation.slideOutHorizontally
+import androidx.compose.animation.togetherWith
+import androidx.compose.runtime.mutableStateListOf
+import androidx.compose.runtime.remember
+import androidx.navigation3.ui.NavDisplay
+import es.joshluq.pluginkit.navigation.Destination
+import es.joshluq.pluginkit.navigation.ShowcaseEntryProvider
 
 @AndroidEntryPoint
 class MainActivity : ComponentActivity() {
@@ -25,36 +25,31 @@ class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
-
-        val greetingProvider = GreetingProvider()
-        // Combining library greeting and injected string
-        val message = "${greetingProvider.getGreeting()} & ${stringProvider.getString()}"
         
         setContent {
             PluginkitTheme {
-                Scaffold(modifier = Modifier.fillMaxSize()) { innerPadding ->
-                    Greeting(
-                        name = message,
-                        modifier = Modifier.padding(innerPadding)
+                val backstack = remember { mutableStateListOf<Destination>(Destination.Home) }
+                val entryProvider = remember {
+                    ShowcaseEntryProvider(
+                        onNavigateToDetails = { id -> backstack.add(Destination.Details(id)) },
+                        onBack = { if (backstack.size > 1) backstack.removeAt(backstack.size - 1) }
                     )
                 }
+
+                NavDisplay(
+                    backStack = backstack,
+                    entryProvider = entryProvider,
+                    onBack = { if (backstack.size > 1) backstack.removeAt(backstack.size - 1) },
+                    popTransitionSpec = {
+                        slideInHorizontally(initialOffsetX = { -it }) togetherWith
+                            slideOutHorizontally(targetOffsetX = { it })
+                    },
+                    predictivePopTransitionSpec = {
+                        slideInHorizontally(initialOffsetX = { -it }) togetherWith
+                            slideOutHorizontally(targetOffsetX = { it })
+                    }
+                )
             }
         }
-    }
-}
-
-@Composable
-fun Greeting(name: String, modifier: Modifier = Modifier) {
-    Text(
-        text = name,
-        modifier = modifier
-    )
-}
-
-@Preview(showBackground = true)
-@Composable
-fun GreetingPreview() {
-    PluginkitTheme {
-        Greeting("Android")
     }
 }
