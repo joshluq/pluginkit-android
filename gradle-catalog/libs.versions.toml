@@ -26,6 +26,7 @@ kotlinxSerialization = "1.11.0"
 kotlinxCoroutines = "1.11.0"
 jackson = "2.22.1"
 ksp = "2.3.4"
+room = "2.8.4"
 pluginVersion = "1.6.0-SNAPSHOT"
 kitVersion = "1.2.0"
 tink = "1.23.0"
@@ -76,6 +77,9 @@ analitycskit = { group = "es.joshluq.kit", name = "analitycskit",  version.ref =
 monitorkit = { group = "es.joshluq.kit", name = "monitorkit",  version.ref = "kitVersion" }
 androidx-datastore-preferences = { group = "androidx.datastore", name = "datastore-preferences", version.ref = "datastore" }
 tink-android = { group = "com.google.crypto.tink", name = "tink-android", version.ref = "tink" }
+androidx-room-runtime = { group = "androidx.room", name = "room-runtime", version.ref = "room" }
+androidx-room-ktx = { group = "androidx.room", name = "room-ktx", version.ref = "room" }
+androidx-room-compiler = { group = "androidx.room", name = "room-compiler", version.ref = "room" }
 androidx-navigation3-runtime = { group = "androidx.navigation3", name = "navigation3-runtime", version.ref = "nav3" }
 androidx-navigation3-ui = { group = "androidx.navigation3", name = "navigation3-ui", version.ref = "nav3" }
 androidx-navigation3-adaptive = { group = "androidx.compose.material3.adaptive", name = "adaptive-navigation3", version.ref = "nav3Adaptive" }
@@ -159,3 +163,4 @@ pluginkit-formatting = { id = "pluginkit.formatting", version.ref = "pluginVersi
 pluginkit-android-feature = { id = "pluginkit.android.feature", version.ref = "pluginVersion" }
 pluginkit-android-publishing = { id = "pluginkit.android.publishing", version.ref = "pluginVersion" }
 pluginkit-android-work = { id = "pluginkit.android.work", version.ref = "pluginVersion" }
+pluginkit-android-room = { id = "pluginkit.android.room", version.ref = "pluginVersion" }

@@ -6,6 +6,7 @@ plugins {
     alias(libs.plugins.pluginkit.quality)
     alias(libs.plugins.pluginkit.android.testing)
     alias(libs.plugins.pluginkit.android.hilt)
+    alias(libs.plugins.pluginkit.android.room)
     alias(libs.plugins.pluginkit.android.navigation)
     alias(libs.plugins.pluginkit.coroutines)
     alias(libs.plugins.pluginkit.formatting)

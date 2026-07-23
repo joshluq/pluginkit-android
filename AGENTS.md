@@ -20,6 +20,7 @@ El proyecto proveerá los siguientes plugins de convención:
 | `pluginkit.android.testing` | Configuración unificada de pruebas. | JUnit, MockK, Espresso, Compose UI Test |
 | `pluginkit.android.network` | Configuración para capa de red. | Retrofit, OkHttp, Jackson Converter |
 | `pluginkit.android.hilt` | Configuración de Inyección de Dependencias. | KSP, Hilt Android, Hilt Compiler |
+| `pluginkit.android.room` | Configuración de Persistencia Local con Room. | KSP, Room Runtime, Room KTX, Room Compiler |
 | `pluginkit.android.navigation` | Configuración de Navegación y Serialización. | Navigation Compose, Hilt Nav, Kotlinx Serialization |
 | `pluginkit.coroutines` | Configuración de programación asíncrona. | Kotlinx Coroutines (Core & Android) |
 | `pluginkit.android.feature` | **Mega-Plugin** para módulos de Feature. | Library + Hilt + Compose + Coroutines + Navigation |

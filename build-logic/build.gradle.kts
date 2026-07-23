@@ -6,13 +6,14 @@ plugins {
 group = "es.joshluq.kit.pluginkit"
 version = "1.6.0-SNAPSHOT"
 
-val agpVersion = "9.2.1"
-val kotlinVersion = "2.3.21"
+val agpVersion = "9.3.0"
+val kotlinVersion = "2.4.10"
 val detektVersion = "1.23.8"
 val sonarVersion = "7.1.0.6387"
-val koverVersion = "0.9.8"
-val hiltVersion = "2.59.2"
-val spotlessVersion = "8.6.0"
+val koverVersion = "0.9.9"
+val hiltVersion = "2.60.1"
+val roomVersion = "2.8.4"
+val spotlessVersion = "8.8.0"
 val kspVersion = "2.3.4"
 
 repositories {
@@ -30,6 +31,7 @@ dependencies {
     implementation("org.sonarsource.scanner.gradle:sonarqube-gradle-plugin:${sonarVersion}")
     implementation("org.jetbrains.kotlinx:kover-gradle-plugin:${koverVersion}")
     implementation("com.google.dagger:hilt-android-gradle-plugin:$hiltVersion")
+    implementation("androidx.room:room-gradle-plugin:$roomVersion")
     implementation("com.diffplug.spotless:spotless-plugin-gradle:${spotlessVersion}")
     implementation("com.google.devtools.ksp:com.google.devtools.ksp.gradle.plugin:$kspVersion")
 }
@@ -75,6 +77,10 @@ gradlePlugin {
         register("androidHilt") {
             id = "pluginkit.android.hilt"
             implementationClass = "es.joshluq.pluginkit.buildlogic.HiltConventionPlugin"
+        }
+        register("androidRoom") {
+            id = "pluginkit.android.room"
+            implementationClass = "es.joshluq.pluginkit.buildlogic.RoomConventionPlugin"
         }
         register("androidNavigation") {
             id = "pluginkit.android.navigation"
