@@ -4,7 +4,7 @@ plugins {
 }
 
 group = "es.joshluq.kit.pluginkit"
-version = "1.7.0-SNAPSHOT"
+version = "1.7.0"
 
 val agpVersion = "9.3.1"
 val kotlinVersion = "2.4.10"
