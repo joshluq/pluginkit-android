@@ -1,10 +1,11 @@
 [versions]
-agp = "9.3.1"
+agp = "9.3.2"
 kotlin = "2.4.10"
 coreKtx = "1.19.0"
 junit = "4.13.2"
 junitVersion = "1.3.0"
 espressoCore = "3.7.0"
+kaspresso = "1.6.1"
 lifecycleRuntimeKtx = "2.11.0"
 activityCompose = "1.13.0"
 composeBom = "2026.08.00"
@@ -15,20 +16,19 @@ work = "2.11.2"
 hiltWork = "1.4.0"
 hiltNavigationCompose = "1.4.0"
 retrofit = "3.0.0"
-spotless = "8.9.0"
+spotless = "8.10.0"
 detektVersion = "1.23.8"
-okhttp = "5.4.0"
-navigationCompose = "2.9.8"
-nav3 = "1.1.6"
+okhttp = "5.5.0"
+navigationCompose = "2.10.0"
+nav3 = "1.1.7"
 nav3Adaptive = "1.3.0"
 nav3Lifecycle = "2.11.0"
 kotlinxSerialization = "1.11.0"
 kotlinxCoroutines = "1.11.0"
-jackson = "2.22.1"
-ksp = "2.3.4"
+jackson = "2.22.2"
+ksp = "2.3.6"
 room = "2.8.4"
-pluginVersion = "1.8.0"
-kitVersion = "1.2.0"
+pluginVersion = "1.9.0-SNAPSHOT"
 tink = "1.23.0"
 datastore = "1.2.1"
 
@@ -72,9 +72,6 @@ androidx-work-testing = { group = "androidx.work", name = "work-testing", versio
 androidx-hilt-work = { group = "androidx.hilt", name = "hilt-work", version.ref = "hiltWork" }
 hilt-compiler-androidx = { group = "androidx.hilt", name = "hilt-compiler", version.ref = "hiltWork" }
 
-fundationkit = { group = "es.joshluq.kit", name = "foundationkit",  version.ref = "kitVersion" }
-analitycskit = { group = "es.joshluq.kit", name = "analitycskit",  version.ref = "kitVersion" }
-monitorkit = { group = "es.joshluq.kit", name = "monitorkit",  version.ref = "kitVersion" }
 androidx-datastore-preferences = { group = "androidx.datastore", name = "datastore-preferences", version.ref = "datastore" }
 tink-android = { group = "com.google.crypto.tink", name = "tink-android", version.ref = "tink" }
 androidx-room-runtime = { group = "androidx.room", name = "room-runtime", version.ref = "room" }
@@ -84,6 +81,10 @@ androidx-navigation3-runtime = { group = "androidx.navigation3", name = "navigat
 androidx-navigation3-ui = { group = "androidx.navigation3", name = "navigation3-ui", version.ref = "nav3" }
 androidx-navigation3-adaptive = { group = "androidx.compose.material3.adaptive", name = "adaptive-navigation3", version.ref = "nav3Adaptive" }
 androidx-lifecycle-viewmodel-navigation3 = { group = "androidx.lifecycle", name = "lifecycle-viewmodel-navigation3", version.ref = "nav3Lifecycle" }
+
+kaspresso-all = { group = "com.kaspersky.android-components", name = "kaspresso", version.ref = "kaspresso" }
+kaspresso-compose = { group = "com.kaspersky.android-components", name = "kaspresso-compose-support", version.ref = "kaspresso" }
+hilt-android-testing = { group = "com.google.dagger", name = "hilt-android-testing", version.ref = "hilt" }
 
 
 [bundles]
@@ -105,8 +106,12 @@ testing-android = [
     "androidx-espresso-core",
     "mockk-android",
     "androidx-compose-ui-test-junit4",
-    "kotlinx-coroutines-test"
+    "kotlinx-coroutines-test",
+    "kaspresso-all",
+    "kaspresso-compose",
+    "hilt-android-testing"
 ]
+
 network = [
     "retrofit",
     "retrofit-converter-jackson",
@@ -126,11 +131,7 @@ navigation = [
     "hilt-navigation-compose",
     "kotlinx-serialization-json"
 ]
-kit = [
-    "fundationkit",
-    "analitycskit",
-    "monitorkit"
-]
+
 work = [
     "androidx-work-runtime",
     "androidx-hilt-work"
