@@ -28,5 +28,6 @@ dependencyResolutionManagement {
 rootProject.name = "Pluginkit"
 include(":showcase")
 include(":mylibrary")
+include(":myjvmlibrary")
 include(":gradle-catalog")
 includeBuild("build-logic")

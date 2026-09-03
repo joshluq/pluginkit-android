@@ -8,9 +8,5 @@ import dagger.hilt.components.SingletonComponent
 @Module
 @InstallIn(SingletonComponent::class)
 abstract class ShowcaseModule {
-
-    @Binds
-    abstract fun bindStringProvider(
-        impl: StringProviderImpl
-    ): StringProvider
+    @Binds abstract fun bindStringProvider(impl: StringProviderImpl): StringProvider
 }

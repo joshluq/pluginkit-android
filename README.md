@@ -31,8 +31,9 @@ El proyecto provee los siguientes plugins de convención:
 | `pluginkit.android.feature` | **Mega-Plugin** para módulos de Feature. | Library + Hilt + Compose + Coroutines + Navigation |
 | `pluginkit.formatting` | Formateo de código automático. | Spotless, Ktlint |
 | `pluginkit.jvm.library` | Configuración para módulos puros de Kotlin/Java. | - |
+| `pluginkit.jvm.publishing` | Publicación de librerías puras de Kotlin/Java a repositorios Maven. | Configurable vía extensión `jvmPublishing` |
 | `pluginkit.quality` | Herramientas de calidad de código (Detekt, Sonar, Kover). | Configurable vía extensión `pluginkitQuality` |
-| `pluginkit.android.publishing` | Publicación de librerías a repositorios Maven. | Configurable vía extensión `androidPublishing` |
+| `pluginkit.android.publishing` | Publicación de librerías Android a repositorios Maven. | Configurable vía extensión `androidPublishing` |
 
 
 ## 🚀 Modo de Uso
@@ -73,6 +74,33 @@ androidPublishing {
 }
 ```
 Para publicar, simplemente ejecuta `./gradlew :mylibrary:publish`.
+
+### 1b. Creando una Librería Kotlin Puro Publicable
+
+Para un módulo Kotlin puro JVM (sin dependencias de Android):
+
+```kotlin
+// myjvmlibrary/build.gradle.kts
+
+plugins {
+    alias(libs.plugins.pluginkit.jvm.library)
+    alias(libs.plugins.pluginkit.quality)
+    alias(libs.plugins.pluginkit.formatting)
+
+    // ¡Añade la capacidad de publicación para JVM!
+    alias(libs.plugins.pluginkit.jvm.publishing)
+}
+
+jvmPublishing {
+    groupId = "es.joshluq.kit"
+    artifactId = "my-jvm-library"
+    version = "1.0.0"
+    repoUrl = "https://nexus.example.com/repository/maven-releases/"
+    pomName = "My JVM Library"
+    pomDescription = "Librería Kotlin pura sin dependencias de Android"
+}
+```
+Para publicar, ejecuta `./gradlew :myjvmlibrary:publish`.
 
 ### 2. Configurar Extensiones
 

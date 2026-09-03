@@ -16,5 +16,4 @@ configure<LibraryExtension> {
 }
 
 dependencies {
-
 }

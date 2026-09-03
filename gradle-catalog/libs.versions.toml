@@ -26,9 +26,9 @@ nav3Lifecycle = "2.11.0"
 kotlinxSerialization = "1.11.0"
 kotlinxCoroutines = "1.11.0"
 jackson = "2.22.2"
-ksp = "2.3.6"
+ksp = "2.3.11"
 room = "2.8.4"
-pluginVersion = "1.9.0-SNAPSHOT"
+pluginVersion = "2.0.0-SNAPSHOT"
 tink = "1.23.0"
 datastore = "1.2.1"
 
@@ -102,14 +102,9 @@ testing-unit = [
     "kotlinx-coroutines-test"
 ]
 testing-android = [
-    "androidx-junit",
-    "androidx-espresso-core",
     "mockk-android",
     "androidx-compose-ui-test-junit4",
     "kotlinx-coroutines-test",
-    "kaspresso-all",
-    "kaspresso-compose",
-    "hilt-android-testing"
 ]
 
 network = [
@@ -154,6 +149,7 @@ pluginkit-android-application = { id = "pluginkit.android.application", version.
 pluginkit-android-compose = { id = "pluginkit.android.compose", version.ref = "pluginVersion" }
 pluginkit-android-library = { id = "pluginkit.android.library", version.ref = "pluginVersion" }
 pluginkit-jvm-library = { id = "pluginkit.jvm.library", version.ref = "pluginVersion" }
+pluginkit-jvm-publishing = { id = "pluginkit.jvm.publishing", version.ref = "pluginVersion" }
 pluginkit-quality = { id = "pluginkit.quality", version.ref = "pluginVersion" }
 pluginkit-android-testing = { id = "pluginkit.android.testing", version.ref = "pluginVersion" }
 pluginkit-android-network = { id = "pluginkit.android.network", version.ref = "pluginVersion" }
