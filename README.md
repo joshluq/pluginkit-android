@@ -128,7 +128,7 @@ Para probar cambios en los plugins localmente o utilizarlos en otros proyectos e
     ./gradlew :build-logic:publishToMavenLocal
     ```
 2.  En el proyecto consumidor, añade `mavenLocal()` al bloque `pluginManagement` en `settings.gradle.kts`.
-3.  Utiliza la versión snapshot (ej. `1.3.0-SNAPSHOT`).
+3.  Utiliza la versión (ej. `2.0.0`).
 
 ---
 

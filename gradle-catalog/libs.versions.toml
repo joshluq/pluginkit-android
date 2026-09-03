@@ -28,7 +28,7 @@ kotlinxCoroutines = "1.11.0"
 jackson = "2.22.2"
 ksp = "2.3.11"
 room = "2.8.4"
-pluginVersion = "2.0.0-SNAPSHOT"
+pluginVersion = "2.0.0"
 tink = "1.23.0"
 datastore = "1.2.1"
 
