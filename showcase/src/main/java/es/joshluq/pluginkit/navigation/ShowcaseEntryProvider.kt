@@ -14,48 +14,51 @@ import androidx.compose.ui.unit.dp
 import androidx.navigation3.runtime.NavEntry
 
 class ShowcaseEntryProvider(
-    private val onNavigateToDetails: (String) -> Unit,
-    private val onBack: () -> Unit
+  private val onNavigateToDetails: (String) -> Unit,
+  private val onBack: () -> Unit,
 ) : (Destination) -> NavEntry<Destination> {
 
-    override fun invoke(key: Destination): NavEntry<Destination> = when (key) {
-        Destination.Home -> NavEntry(
-            key = key,
-            content = { HomeScreen(onNavigateToDetails) }
+  override fun invoke(key: Destination): NavEntry<Destination> =
+    when (key) {
+      Destination.Home ->
+        NavEntry(
+          key = key,
+          content = { HomeScreen(onNavigateToDetails) },
         )
-        is Destination.Details -> NavEntry(
-            key = key,
-            content = { DetailsScreen(key.id, onBack) }
+      is Destination.Details ->
+        NavEntry(
+          key = key,
+          content = { DetailsScreen(key.id, onBack) },
         )
     }
 }
 
 @Composable
 fun HomeScreen(onNavigateToDetails: (String) -> Unit) {
-    Column(
-        modifier = Modifier.fillMaxSize(),
-        verticalArrangement = Arrangement.Center,
-        horizontalAlignment = Alignment.CenterHorizontally
-    ) {
-        Text(text = "Home Screen")
-        Spacer(modifier = Modifier.height(16.dp))
-        Button(onClick = { onNavigateToDetails("Example ID") }) {
-            Text("Go to Details")
-        }
+  Column(
+    modifier = Modifier.fillMaxSize(),
+    verticalArrangement = Arrangement.Center,
+    horizontalAlignment = Alignment.CenterHorizontally,
+  ) {
+    Text(text = "Home Screen")
+    Spacer(modifier = Modifier.height(16.dp))
+    Button(onClick = { onNavigateToDetails("Example ID") }) {
+      Text("Go to Details")
     }
+  }
 }
 
 @Composable
 fun DetailsScreen(id: String, onBack: () -> Unit) {
-    Column(
-        modifier = Modifier.fillMaxSize(),
-        verticalArrangement = Arrangement.Center,
-        horizontalAlignment = Alignment.CenterHorizontally
-    ) {
-        Text(text = "Details Screen for ID: $id")
-        Spacer(modifier = Modifier.height(16.dp))
-        Button(onClick = onBack) {
-            Text("Back Home")
-        }
+  Column(
+    modifier = Modifier.fillMaxSize(),
+    verticalArrangement = Arrangement.Center,
+    horizontalAlignment = Alignment.CenterHorizontally,
+  ) {
+    Text(text = "Details Screen for ID: $id")
+    Spacer(modifier = Modifier.height(16.dp))
+    Button(onClick = onBack) {
+      Text("Back Home")
     }
+  }
 }

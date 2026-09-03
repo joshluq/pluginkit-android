@@ -45,12 +45,15 @@ class QualityConventionPlugin : Plugin<Project> {
 
             extensions.configure<DetektExtension> {
                 toolVersion = "1.23.8"
-                source.setFrom(files("src/main/java", "src/main/kotlin"))
+                source.setFrom(files("src/main/java", "src/main/kotlin").filter { it.exists() })
                 config.setFrom(files("${project.rootDir}/config/detekt/detekt.yml"))
                 buildUponDefaultConfig = true
                 allRules = false
                 autoCorrect = true
-                baseline = file("$projectDir/config/baseline.xml")
+                val baselineFile = file("$projectDir/config/baseline.xml")
+                if (baselineFile.exists()) {
+                    baseline = baselineFile
+                }
             }
 
             tasks.withType<Detekt>().configureEach {

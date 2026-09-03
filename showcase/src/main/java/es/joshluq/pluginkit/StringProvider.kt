@@ -6,8 +6,8 @@ interface StringProvider {
     fun getString(): String
 }
 
-class StringProviderImpl @Inject constructor() : StringProvider {
-    override fun getString(): String {
-        return "Hello from Hilt Injected Dependency!"
+class StringProviderImpl
+    @Inject
+    constructor() : StringProvider {
+        override fun getString(): String = "Hello from Hilt Injected Dependency!"
     }
-}
