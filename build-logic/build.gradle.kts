@@ -6,14 +6,14 @@ plugins {
 group = "es.joshluq.kit.pluginkit"
 version = "1.9.0-SNAPSHOT"
 
-val agpVersion = "9.3.2"
+val agpVersion = "9.4.0"
 val kotlinVersion = "2.4.10"
 val detektVersion = "1.23.8"
 val sonarVersion = "7.1.0.6387"
 val koverVersion = "0.9.9"
 val hiltVersion = "2.60.1"
 val roomVersion = "2.8.4"
-val spotlessVersion = "8.10.0"
+val spotlessVersion = "8.10.1"
 val kspVersion = "2.3.6"
 
 repositories {
