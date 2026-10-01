@@ -3,29 +3,29 @@ package es.joshluq.pluginkit.buildlogic
 import org.gradle.api.Plugin
 import org.gradle.api.Project
 import org.gradle.api.plugins.JavaPluginExtension
+import org.gradle.api.provider.Property
 import org.gradle.api.publish.PublishingExtension
 import org.gradle.api.publish.maven.MavenPublication
 import org.gradle.kotlin.dsl.configure
 import org.gradle.kotlin.dsl.create
 import java.net.URI
 
-@Suppress("unused")
-open class JvmPublishingExtension {
-    var repoName: String? = null
-    var repoUrl: String? = null
-    var repoUser: String? = null
-    var repoPassword: String? = null
-    var version: String? = null
-    var groupId: String? = null
-    var artifactId: String? = null
-    var pomName: String? = null
-    var pomDescription: String? = null
+interface JvmPublishingExtension {
+    val repoName: Property<String>
+    val repoUrl: Property<String>
+    val repoUser: Property<String>
+    val repoPassword: Property<String>
+    val version: Property<String>
+    val groupId: Property<String>
+    val artifactId: Property<String>
+    val pomName: Property<String>
+    val pomDescription: Property<String>
 }
 
 /**
  * JVM Publishing Convention Plugin.
  *
- * Configures Maven publishing for pure Kotlin/Java JVM library modules.
+ * Configures Maven publishing for pure Kotlin/Java JVM library modules using Gradle's Lazy Configuration API.
  * Applies:
  * - `maven-publish`
  *
@@ -38,70 +38,64 @@ open class JvmPublishingExtension {
  */
 @Suppress("unused")
 class JvmPublishingConventionPlugin : Plugin<Project> {
-    override fun apply(target: Project) {
-        with(target) {
-            val extension = extensions.create("jvmPublishing", JvmPublishingExtension::class.java)
+    override fun apply(target: Project) = with(target) {
+        val extension = extensions.create<JvmPublishingExtension>("jvmPublishing").apply {
+            repoName.convention("MavenRepo")
+            artifactId.convention(provider { project.name })
+            groupId.convention(provider { project.group.toString().takeIf { it.isNotBlank() } ?: "es.joshluq.kit" })
+            version.convention(provider { project.version.toString().takeIf { it != Project.DEFAULT_VERSION } ?: "1.0.0" })
+            pomName.convention(artifactId)
+            pomDescription.convention("Kotlin JVM library published automatically")
+        }
 
-            pluginManager.apply("maven-publish")
+        pluginManager.apply("maven-publish")
 
-            // Ensure sources and javadoc jars are attached to the java component
-            extensions.configure<JavaPluginExtension> {
-                withSourcesJar()
-                withJavadocJar()
-            }
+        // Ensure sources and javadoc jars are attached to the java component
+        extensions.configure<JavaPluginExtension> {
+            withSourcesJar()
+            withJavadocJar()
+        }
 
-            afterEvaluate {
-                val repoNameValue = extension.repoName ?: "MavenRepo"
-                val repoUrlValue = extension.repoUrl
-                    ?: System.getenv("MAVEN_REPO_URL")
-                    ?: System.getenv("REPO_URL")
-                val repoUserValue = extension.repoUser
-                    ?: System.getenv("MAVEN_REPO_USER")
-                    ?: System.getenv("REPO_USER")
-                    ?: System.getenv("GITHUB_ACTOR")
-                val repoPasswordValue = extension.repoPassword
-                    ?: System.getenv("MAVEN_REPO_PASSWORD")
-                    ?: System.getenv("REPO_PASSWORD")
-                    ?: System.getenv("GITHUB_TOKEN")
-
-                val versionValue = extension.version
-                    ?: project.version.toString().takeIf { it != Project.DEFAULT_VERSION }
-                val groupIdValue = extension.groupId
-                    ?: project.group.toString().takeIf { it.isNotBlank() }
-                val artifactIdValue = extension.artifactId ?: project.name
-
-                extensions.configure<PublishingExtension> {
-                    publications {
-                        create<MavenPublication>("mavenJava") {
-                            components.findByName("java")?.let { javaComponent ->
-                                from(javaComponent)
-                            }
-
-                            groupIdValue?.let { groupId = it }
-                            artifactIdValue.let { artifactId = it }
-                            versionValue?.let { version = it }
-
-                            pom {
-                                name.set(extension.pomName ?: artifactIdValue)
-                                description.set(extension.pomDescription ?: "Kotlin JVM library published automatically")
-                            }
-                        }
+        extensions.configure<PublishingExtension> {
+            publications {
+                create<MavenPublication>("mavenJava") {
+                    val javaComponent = components.findByName("java")
+                    if (javaComponent != null) {
+                        from(javaComponent)
                     }
 
-                    repositories {
-                        repoUrlValue?.takeIf { it.isNotBlank() }?.let { rawUrl ->
-                            maven {
-                                name = repoNameValue
-                                url = URI.create(rawUrl)
+                    groupId = extension.groupId.get()
+                    artifactId = extension.artifactId.get()
+                    version = extension.version.get()
 
-                                if (!repoUserValue.isNullOrBlank() || !repoPasswordValue.isNullOrBlank()) {
-                                    credentials {
-                                        username = repoUserValue ?: ""
-                                        password = repoPasswordValue ?: ""
-                                    }
-                                }
-                            }
-                        }
+                    pom {
+                        name.set(extension.pomName)
+                        description.set(extension.pomDescription)
+                    }
+                }
+            }
+
+            repositories {
+                maven {
+                    name = extension.repoName.get()
+                    url = URI.create(
+                        extension.repoUrl.orNull
+                            ?: System.getenv("MAVEN_REPO_URL")
+                            ?: System.getenv("REPO_URL")
+                            ?: "https://maven.pkg.github.com/${System.getenv("GITHUB_REPOSITORY") ?: "joshluq/pluginkit-android"}"
+                    )
+
+                    credentials {
+                        username = extension.repoUser.orNull
+                            ?: System.getenv("MAVEN_REPO_USER")
+                            ?: System.getenv("REPO_USER")
+                            ?: System.getenv("GITHUB_ACTOR")
+                            ?: ""
+                        password = extension.repoPassword.orNull
+                            ?: System.getenv("MAVEN_REPO_PASSWORD")
+                            ?: System.getenv("REPO_PASSWORD")
+                            ?: System.getenv("GITHUB_TOKEN")
+                            ?: ""
                     }
                 }
             }

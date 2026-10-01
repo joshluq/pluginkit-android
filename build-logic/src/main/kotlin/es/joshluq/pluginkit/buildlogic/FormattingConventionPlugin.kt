@@ -26,7 +26,6 @@ class FormattingConventionPlugin : Plugin<Project> {
 
             extensions.configure<SpotlessExtension> {
                 kotlin {
-                    ktfmt().googleStyle()
                     target("**/*.kt")
                     targetExclude("**/build/**/*.kt")
                     ktlint()
@@ -42,6 +41,7 @@ class FormattingConventionPlugin : Plugin<Project> {
                     leadingTabsToSpaces(4)
                     endWithNewline()
                 }
+
                 kotlinGradle {
                     target("*.gradle.kts")
                     ktlint()

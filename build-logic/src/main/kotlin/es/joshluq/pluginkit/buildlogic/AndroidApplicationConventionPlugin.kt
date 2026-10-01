@@ -31,12 +31,13 @@ class AndroidApplicationConventionPlugin : Plugin<Project> {
             }
 
             extensions.configure<ApplicationExtension> {
-                compileSdk = 37
+                compileSdk = getIntVersion("android-compileSdk", 37)
                 defaultConfig {
-                    minSdk = 24
-                    targetSdk = 37
+                    minSdk = getIntVersion("android-minSdk", 24)
+                    targetSdk = getIntVersion("android-targetSdk", 37)
                     testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
                 }
+
 
                 buildTypes {
                     release {

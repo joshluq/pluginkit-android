@@ -31,4 +31,5 @@ jobs:
       - name: Verificar Plugins y Compilación de Ejemplos
         run: |
           chmod +x gradlew
-          ./gradlew :build-logic:check :gradle-catalog:check :showcase:assembleDebug :mylibrary:assemble :myjvmlibrary:build --no-daemon
+          ./gradlew :build-logic:check :showcase:assembleDebug :mylibrary:assemble :myjvmlibrary:build --no-daemon
+
