@@ -1,61 +1,61 @@
-# Contexto del Proyecto: PluginKit - Convention Plugin
+# Project Context: PluginKit - Gradle Convention Plugins
 
-## Descripción General
-**PluginKit** es un repositorio independiente diseñado como una colección de **Gradle Convention Plugins**. Su función principal es actuar como el "Master Dependency Management" para el ecosistema de aplicaciones de la organización. Centraliza la lógica de construcción, versiones de librerías y configuraciones de plugins en una única fuente de verdad.
+## Overview
+**PluginKit** is an independent repository designed as a collection of **Gradle Convention Plugins**. Its primary goal is to serve as the "Master Dependency & Build Management" engine for the organization's application ecosystem. It centralizes build logic, library versions, and plugin configurations into a single source of truth.
 
-## Objetivos Principales
-1.  **Gestión Centralizada de Dependencias**: Unificar versiones (AndroidX, Kotlin, Retrofit, Compose, etc.) utilizando Gradle Version Catalogs.
-2.  **Estandarización**: Asegurar que todos los módulos (Apps y Librerías) compartan configuraciones críticas como `minSdk`, `targetSdk`, opciones de compilación de Kotlin y reglas de análisis estático.
-3.  **Reducción de Boilerplate**: Eliminar la repetición de código en los archivos `build.gradle.kts` de cada módulo mediante la inyección automática de dependencias base.
-4.  **Facilidad de Mantenimiento**: Permitir actualizaciones transversales modificando un solo punto en este repositorio.
+## Main Objectives
+1. **Centralized Dependency Management**: Unify library versions (AndroidX, Kotlin, Retrofit, Compose, etc.) using Gradle Version Catalogs (`libs.versions.toml`).
+2. **Build Standardization**: Ensure all modules (applications and libraries) share baseline configurations such as `compileSdk`, `minSdk`, `targetSdk`, JVM toolchains, and static analysis quality gates.
+3. **Boilerplate Reduction**: Eliminate boilerplate across module `build.gradle.kts` files through automatic injection of common dependencies and plugins.
+4. **Maintainability**: Enable cross-cutting updates across all organizational apps by modifying a single point in this repository.
 
-## Arquitectura de Plugins
-El proyecto proveerá los siguientes plugins de convención:
+## Plugin Architecture
+The project provides the following convention plugins:
 
-| ID del Plugin | Descripción | Inyección Automática |
+| Plugin ID | Description | Automatic Injections / Applied Plugins |
 | :--- | :--- | :--- |
-| `pluginkit.android.application` | Configuración base para aplicaciones Android. | `androidx-core-ktx`, `lifecycle-runtime-ktx` |
-| `pluginkit.android.library` | Configuración para librerías Android. | `androidx-core-ktx`, `lifecycle-runtime-ktx` |
-| `pluginkit.android.compose` | Configuración específica para Jetpack Compose. | BOM, UI, Graphics, Tooling, Material3 |
-| `pluginkit.android.testing` | Configuración unificada de pruebas. | JUnit, MockK, Espresso, Compose UI Test |
-| `pluginkit.android.network` | Configuración para capa de red. | Retrofit, OkHttp, Jackson Converter |
-| `pluginkit.android.hilt` | Configuración de Inyección de Dependencias. | KSP, Hilt Android, Hilt Compiler |
-| `pluginkit.android.room` | Configuración de Persistencia Local con Room. | KSP, Room Runtime, Room KTX, Room Compiler |
-| `pluginkit.android.navigation` | Configuración de Navegación y Serialización. | Navigation Compose, Hilt Nav, Kotlinx Serialization |
-| `pluginkit.coroutines` | Configuración de programación asíncrona. | Kotlinx Coroutines (Core & Android) |
-| `pluginkit.android.feature` | **Mega-Plugin** para módulos de Feature. | Library + Hilt + Compose + Coroutines + Navigation |
-| `pluginkit.formatting` | Formateo de código automático. | Spotless, Ktlint |
-| `pluginkit.jvm.library` | Configuración para módulos puros de Kotlin/Java. | - |
-| `pluginkit.jvm.publishing` | Publicación de librerías puras de Kotlin/Java a repositorios Maven. | Configurable vía extensión `jvmPublishing` |
-| `pluginkit.quality` | Herramientas de calidad de código (Detekt, Sonar, Kover). | Configurable vía extensión `pluginkitQuality` |
-| `pluginkit.android.publishing` | Publicación de librerías Android a repositorios Maven. | Configurable vía extensión `androidPublishing` |
+| `pluginkit.android.application` | Base configuration for Android applications. | `com.android.application`, `androidx-core-ktx`, `lifecycle-runtime-ktx` |
+| `pluginkit.android.library` | Base configuration for Android libraries. | `com.android.library`, `androidx-core-ktx`, `lifecycle-runtime-ktx` |
+| `pluginkit.android.compose` | Jetpack Compose configuration. | BOM, UI, Graphics, Tooling, Material3 |
+| `pluginkit.android.testing` | Unified test configuration. | JUnit, MockK, Espresso, Compose UI Test |
+| `pluginkit.android.network` | Networking stack configuration. | Retrofit, OkHttp, Jackson Converter |
+| `pluginkit.android.hilt` | Dependency injection configuration. | KSP, Hilt Android, Hilt Compiler |
+| `pluginkit.android.room` | Local persistence configuration with Room. | KSP, Room Runtime, Room KTX, Room Compiler |
+| `pluginkit.android.navigation` | Type-safe navigation & serialization. | Navigation Compose, Hilt Navigation, Kotlinx Serialization |
+| `pluginkit.coroutines` | Asynchronous programming configuration. | Kotlinx Coroutines (Core & Android) |
+| `pluginkit.android.feature` | **Composite Mega-Plugin** for feature modules. | Library + Hilt + Compose + Coroutines + Navigation |
+| `pluginkit.formatting` | Code style & formatting. | Spotless, Ktlint |
+| `pluginkit.jvm.library` | Pure Kotlin/Java JVM modules. | `org.jetbrains.kotlin.jvm`, Java 17 |
+| `pluginkit.jvm.publishing` | Maven publication for pure JVM libraries. | Configurable via `jvmPublishing` extension |
+| `pluginkit.quality` | Static analysis & code coverage. | Detekt, SonarQube, Kover (via `pluginkitQuality`) |
+| `pluginkit.android.publishing` | Maven publication for Android libraries. | Configurable via `androidPublishing` extension |
+| `pluginkit.android.work` | WorkManager configuration. | WorkManager Runtime, Hilt Work, KSP |
 
-## Estructura del Proyecto
-*   **`build-logic`**: Módulo incluido que contiene el código fuente de los plugins (Composite Build).
-*   **`gradle/libs.versions.toml`**: Catálogo de versiones centralizado.
-*   **`showcase`**: (Antes `app`) Módulo de aplicación de ejemplo que consume los plugins y demuestra su integración.
-*   **`mylibrary`**: Módulo de librería de ejemplo para validar la configuración de `pluginkit.android.library`.
+## Project Structure
+* **`build-logic/`**: Included build (`includeBuild`) containing the convention plugins source code (Composite Build).
+* **`gradle-catalog/`**: Subproject containing and publishing the centralized version catalog (`libs.versions.toml`).
+* **`showcase/`**: Android application module showcasing the integration of all convention plugins.
+* **`mylibrary/`**: Android library sample module validating `pluginkit.android.library` and `androidPublishing`.
+* **`myjvmlibrary/`**: Pure JVM Kotlin module validating `pluginkit.jvm.library` and `jvmPublishing`.
 
-## Tecnologías
-*   Gradle 9.1
-*   Android Gradle Plugin 9.0
-*   Gradle Kotlin DSL
-*   Gradle Version Catalogs (TOML)
-*   Composite Builds
-*   Detekt, SonarQube, Kover, MockK, Spotless (Ktlint)
-*   Retrofit, OkHttp, Hilt, Coroutines, KSP
-*   Navigation Compose, Kotlin Serialization
-*   Maven Publish
+## Core Tech Stack
+* Gradle 9.x
+* Android Gradle Plugin 9.x
+* Gradle Kotlin DSL
+* Gradle Version Catalogs (TOML)
+* Composite Builds
+* Detekt, SonarQube, Kover, MockK, Spotless (Ktlint)
+* Retrofit, OkHttp, Hilt, Coroutines, KSP
+* Navigation Compose, Kotlinx Serialization
+* Maven Publish
 
-## Skills Especializados del Workspace (`.agents/skills/`)
-El repositorio cuenta con skills dedicados para guiar el desarrollo, testing y despliegue del proyecto:
-1. [**`github-actions-ci-cd`**](file:///.agents/skills/github-actions-ci-cd/SKILL.md): Flujos de integración y despliegue continuo con GitHub Actions y publicación en GitHub Packages Maven.
-2. [**`gradle-convention-plugins`**](file:///.agents/skills/gradle-convention-plugins/SKILL.md): Pautas y estándares de desarrollo de plugins de convención en Kotlin DSL para Gradle 9+ y AGP 9.0 en `build-logic`.
-3. [**`plugin-testing-and-validation`**](file:///.agents/skills/plugin-testing-and-validation/SKILL.md): Guías de prueba local, validación de módulos de ejemplo (`showcase`, librerías) y `mavenLocal`.
+## Specialized Workspace Skills (`.agents/skills/`)
+The workspace includes dedicated skills to guide development, testing, and deployment:
+1. [**`github-actions-ci-cd`**](file:///.agents/skills/github-actions-ci-cd/SKILL.md): Guidelines and workflows for continuous integration, verification, and deployment to GitHub Packages Maven.
+2. [**`gradle-convention-plugins`**](file:///.agents/skills/gradle-convention-plugins/SKILL.md): Standards and idioms for Kotlin DSL convention plugins on Gradle 9+ and AGP 9.0 in `build-logic`.
+3. [**`plugin-testing-and-validation`**](file:///.agents/skills/plugin-testing-and-validation/SKILL.md): Runbooks for local testing, showcase verification, and `mavenLocal` validation.
 
-## Estrategia de Versionado y Despliegue (CI/CD)
-* **Versión centralizada**: La versión semántica base se define en `gradle.properties` (`pluginKitVersion=X.Y.Z`). Nunca hardcodear versiones fijas en `build-logic/build.gradle.kts` ni `gradle-catalog/build.gradle.kts`.
-* **Desarrollo continuo**: Al hacer push/merge a `develop`, el workflow `publish-snapshots.yml` publica automáticamente artefactos `X.Y.Z-SNAPSHOT` en GitHub Packages.
-* **Releases oficiales**: Al hacer push/merge a `main`, el workflow `publish-release.yml` publica la versión oficial limpia `X.Y.Z`, crea el Git Tag `vX.Y.Z` y genera la GitHub Release automáticamente.
-
-
+## Versioning & CI/CD Strategy
+* **Centralized Version**: The base semantic version is configured in `gradle.properties` (`pluginKitVersion=X.Y.Z`). Never hardcode fixed versions in `build-logic/build.gradle.kts` or `gradle-catalog/build.gradle.kts`.
+* **Continuous Development (Snapshots)**: Pushing or merging to `develop` automatically publishes `X.Y.Z-SNAPSHOT` artifacts to GitHub Packages via `publish-snapshots.yml`.
+* **Official Releases**: Pushing or merging to `main` publishes the clean `X.Y.Z` release, generates the Git Tag `vX.Y.Z`, and creates the GitHub Release with changelog notes via `publish-release.yml`.

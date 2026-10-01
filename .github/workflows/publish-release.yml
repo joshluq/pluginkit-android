@@ -18,30 +18,30 @@ jobs:
       packages: write
 
     steps:
-      - name: Checkout del código
+      - name: Checkout Code
         uses: actions/checkout@v4
         with:
           fetch-depth: 0
 
-      - name: Extraer versión de gradle.properties
+      - name: Extract Version from gradle.properties
         id: extract_version
         run: |
           VERSION=$(grep "^pluginKitVersion=" gradle.properties | cut -d'=' -f2 | tr -d '[:space:]')
           TAG="v$VERSION"
           echo "VERSION=$VERSION" >> $GITHUB_OUTPUT
           echo "TAG=$TAG" >> $GITHUB_OUTPUT
-          echo "Publicando Release oficial versión: $VERSION con tag: $TAG"
+          echo "Publishing official release version: $VERSION with tag: $TAG"
 
-      - name: Configurar JDK 17
+      - name: Setup JDK 17
         uses: actions/setup-java@v4
         with:
           java-version: '17'
           distribution: 'temurin'
 
-      - name: Configurar Gradle
+      - name: Setup Gradle
         uses: gradle/actions/setup-gradle@v3
 
-      - name: Publicar Release en GitHub Packages
+      - name: Publish Release to GitHub Packages
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           GITHUB_ACTOR: ${{ github.actor }}
@@ -49,7 +49,7 @@ jobs:
           chmod +x gradlew
           ./gradlew :build-logic:publish :gradle-catalog:publish -PpluginVersion="${{ steps.extract_version.outputs.VERSION }}" --no-daemon --stacktrace
 
-      - name: Crear Git Tag y GitHub Release
+      - name: Create Git Tag & GitHub Release
         uses: softprops/action-gh-release@v2
         with:
           tag_name: ${{ steps.extract_version.outputs.TAG }}

@@ -1,58 +1,61 @@
 ---
 name: gradle-convention-plugins
-description: Guía experta para desarrollar, refactorizar y extender Gradle Convention Plugins con Kotlin DSL en build-logic, para Gradle 9.x y AGP 9.0 en PluginKit.
+description: Expert guidelines for developing, refactoring, and maintaining Gradle Convention Plugins using Kotlin DSL in build-logic for Gradle 9.x and AGP 9.0 in PluginKit.
 ---
 
 # Gradle Convention Plugins Specialist - PluginKit
 
-Este skill contiene las directrices, arquitecturas y patrones autoritativos para implementar y mantener los **Convention Plugins** dentro del composite build `build-logic` de **PluginKit**.
+This skill contains the authoritative guidelines, architecture patterns, and idioms for implementing and maintaining **Convention Plugins** inside the `build-logic` composite build in **PluginKit**.
 
 ---
 
-## 1. Arquitectura de `build-logic`
+## 1. `build-logic` Architecture
 
-PluginKit utiliza un **Composite Build** incluido mediante `includeBuild("build-logic")` en `settings.gradle.kts`.
+PluginKit uses a **Composite Build** included via `includeBuild("build-logic")` in `settings.gradle.kts`.
 
-* **Ubicación del código**: `build-logic/src/main/kotlin/es/joshluq/pluginkit/buildlogic/`
-* **Registro de plugins**: `build-logic/build.gradle.kts` dentro del bloque `gradlePlugin { plugins { ... } }`.
-* **Convención de IDs**: `pluginkit.<plataforma>.<feature>` (ej. `pluginkit.android.library`, `pluginkit.quality`).
+* **Source Location**: `build-logic/src/main/kotlin/es/joshluq/pluginkit/buildlogic/`
+* **Plugin Registration**: `build-logic/build.gradle.kts` within the `gradlePlugin { plugins { ... } }` block.
+* **Naming Conventions**: `pluginkit.<platform>.<feature>` (e.g., `pluginkit.android.library`, `pluginkit.quality`).
+* **Shared Catalog**: `build-logic` consumes the centralized `gradle-catalog/libs.versions.toml` through its own `build-logic/settings.gradle.kts`.
 
 ---
 
-## 2. Reglas Mandatorias para Gradle 9.x y AGP 9.0
+## 2. Mandatory Rules for Gradle 9.x and AGP 9.0
 
-### A. Lazy Configuration API Obligatoria
-Nunca uses APIs ansiosas (eager APIs) que fuerzan la resolución temprana de tareas o extensiones:
-- **Correcto**: `tasks.named("test") { ... }`, `tasks.withType<KotlinCompile>().configureEach { ... }`
-- **Incorrecto**: `tasks.getByName(...)`, `tasks.all { ... }`
+### A. Mandatory Lazy Configuration API
+Never use eager APIs that trigger early realization of tasks or extensions:
+- **Correct**: `tasks.named("test") { ... }`, `tasks.withType<KotlinCompile>().configureEach { ... }`
+- **Avoid**: `tasks.getByName(...)`, `tasks.all { ... }`
 
-Usa siempre `Property<T>` y `Provider<T>` en las extensiones del plugin:
+Use `Property<T>` and `Provider<T>` for all custom plugin extensions:
 ```kotlin
-interface PluginKitQualityExtension {
-    val enableDetekt: Property<Boolean>
-    val enableSonar: Property<Boolean>
+interface AndroidPublishingExtension {
+    val repoUrl: Property<String>
+    val artifactId: Property<String>
+    val groupId: Property<String>
 }
 ```
 
-### B. Acceso al Version Catalog (`libs.versions.toml`)
-Para consumir librerías o bundles definidos en el catálogo desde un plugin en `build-logic`:
+> [!IMPORTANT]
+> Avoid `afterEvaluate { ... }`. Connect lazy extension properties directly to the underlying Gradle tasks or publishing models.
+
+### B. Accessing the Version Catalog (`libs.versions.toml`)
+To access catalog dependencies from a convention plugin in `build-logic`, use the provided extensions:
 
 ```kotlin
-val VersionCatalog = project.extensions.getByType<VersionCatalogsExtension>().named("libs")
+// Via BuildLogicExtensions.kt
+val coreKtx = libs.findLibrary("androidx-core-ktx").get()
+dependencies.add("implementation", coreKtx)
 
-// Dependencias directas
-val coroutines = libs.findLibrary("kotlinx-coroutines-core").get()
-dependencies.add("implementation", coroutines)
-
-// Versiones
-val minSdk = libs.findVersion("android-minSdk").get().requiredVersion.toInt()
+// Safe integer version with fallback
+val compileSdk = getIntVersion("android-compileSdk", 37)
 ```
 
 ---
 
-## 3. Patrón de Composición (Mega-Plugins)
+## 3. Composition Pattern (Composite Mega-Plugins)
 
-Los plugins de alto nivel (como `pluginkit.android.feature`) componen plugins base de forma modular sin duplicar lógica:
+High-level plugins (such as `pluginkit.android.feature`) compose baseline plugins without duplicating setup:
 
 ```kotlin
 class AndroidFeatureConventionPlugin : Plugin<Project> {
@@ -70,20 +73,20 @@ class AndroidFeatureConventionPlugin : Plugin<Project> {
 
 ---
 
-## 4. Registro de Nuevos Plugins
+## 4. Registering New Plugins
 
-Al crear un nuevo plugin en Kotlin:
-1. Crea la clase `es.joshluq.pluginkit.buildlogic.MiNuevoConventionPlugin` implementando `Plugin<Project>`.
-2. Regístralo en `build-logic/build.gradle.kts`:
+When adding a new convention plugin:
+1. Create the Kotlin class: `es.joshluq.pluginkit.buildlogic.MyNewConventionPlugin : Plugin<Project>`.
+2. Register it in `build-logic/build.gradle.kts`:
    ```kotlin
    gradlePlugin {
        plugins {
-           register("miNuevoPlugin") {
-               id = "pluginkit.mi.nuevo.plugin"
-               implementationClass = "es.joshluq.pluginkit.buildlogic.MiNuevoConventionPlugin"
+           register("myNewPlugin") {
+               id = "pluginkit.my.new.plugin"
+               implementationClass = "es.joshluq.pluginkit.buildlogic.MyNewConventionPlugin"
            }
        }
    }
    ```
-3. Añade la configuración en el catálogo de versiones si aplica.
-4. Actualiza la tabla de plugins en `AGENTS.md`.
+3. Add the plugin definition to `gradle-catalog/libs.versions.toml` if external consumers need to reference it by alias.
+4. Update the plugin table in `AGENTS.md` and `README.md`.
