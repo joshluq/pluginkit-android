@@ -10,11 +10,34 @@ version = providers.gradleProperty("pluginVersion")
 
 
 
-catalog {
-    versionCatalog {
-        from(files("libs.versions.toml"))
+val processedTomlFile = layout.buildDirectory.file("processed-catalog/libs.versions.toml")
+
+val processCatalogToml = tasks.register<Copy>("processCatalogToml") {
+    inputs.property("targetVersion", project.version.toString())
+    from("libs.versions.toml")
+    into(layout.buildDirectory.dir("processed-catalog"))
+    filter { line: String ->
+        if (line.trim().startsWith("pluginVersion =")) {
+            "pluginVersion = \"${project.version}\""
+        } else {
+            line
+        }
     }
 }
+
+
+tasks.named("generateCatalogAsToml") {
+    dependsOn(processCatalogToml)
+}
+
+catalog {
+    versionCatalog {
+        from(files(processedTomlFile))
+    }
+}
+
+
+
 
 publishing {
     publications {
