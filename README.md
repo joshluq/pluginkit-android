@@ -119,18 +119,22 @@ pluginkitQuality {
 
 ---
 
-## 📦 Desarrollo y Publicación Local
+## 🚀 Flujo de Despliegue y Versionado (CI/CD)
 
-Para probar cambios en los plugins localmente o utilizarlos en otros proyectos en tu máquina:
+El versionado de todos los convention plugins y el Version Catalog está centralizado en [`gradle.properties`](gradle.properties) a través de la propiedad `pluginKitVersion=2.0.0`.
 
-1.  Publica los plugins a tu repositorio Maven Local:
-    ```bash
-    ./gradlew :build-logic:publishToMavenLocal
-    ```
-2.  En el proyecto consumidor, añade `mavenLocal()` al bloque `pluginManagement` en `settings.gradle.kts`.
-3.  Utiliza la versión (ej. `2.0.0`).
+El despliegue hacia **GitHub Packages** (`maven.pkg.github.com`) está 100% automatizado mediante GitHub Actions:
+
+| Evento | Rama | Artefacto Publicado | Comportamiento |
+| :--- | :--- | :--- | :--- |
+| **Pull Request** | `develop` o `main` | Ninguno | Valida compilación de `build-logic`, `gradle-catalog` y módulos de ejemplo (`pr-checks.yml`). |
+| **Merge / Push** | `develop` | `X.Y.Z-SNAPSHOT` | Concatena automáticamente `-SNAPSHOT` y publica la versión de desarrollo (`publish-snapshots.yml`). |
+| **Merge / Push** | `main` | `X.Y.Z` (Release) | Publica la versión oficial, genera el Git Tag `vX.Y.Z` y crea la **GitHub Release** con changelog (`publish-release.yml`). |
+
+> **Para preparar una nueva versión**: Solo edita `pluginKitVersion=X.Y.Z` en `gradle.properties` en tu rama de trabajo o PR. Al mergear a `main`, todo se despliega y etiqueta automáticamente.
 
 ---
+
 
 ## 🏗️ Estructura del Proyecto
 

@@ -1,20 +1,19 @@
-name: Publish Android Plugins
+name: PR Checks & Verification
 
 on:
-  push:
+  pull_request:
     branches:
       - main
       - develop
     paths-ignore:
-      - 'README.md'
+      - '**.md'
       - 'docs/**'
+      - '.agents/**'
 
 jobs:
-  publish:
+  verify:
+    name: Build & Verify Plugins
     runs-on: ubuntu-latest
-    permissions:
-      contents: read
-      packages: write
 
     steps:
       - name: Checkout del código
@@ -29,10 +28,7 @@ jobs:
       - name: Configurar Gradle
         uses: gradle/actions/setup-gradle@v3
 
-      - name: Publicar Plugins
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          GITHUB_ACTOR: ${{ github.actor }}
+      - name: Verificar Plugins y Compilación de Ejemplos
         run: |
           chmod +x gradlew
-          ./gradlew :build-logic:publish :gradle-catalog:publish
+          ./gradlew :build-logic:check :gradle-catalog:check :showcase:assembleDebug :mylibrary:assemble :myjvmlibrary:build --no-daemon

@@ -1,0 +1,49 @@
+name: Publish Snapshots
+
+on:
+  push:
+    branches:
+      - develop
+    paths-ignore:
+      - '**.md'
+      - 'docs/**'
+      - '.agents/**'
+
+jobs:
+  publish-snapshot:
+    name: Build & Publish Snapshot
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      packages: write
+
+    steps:
+      - name: Checkout del código
+        uses: actions/checkout@v4
+
+      - name: Configurar JDK 17
+        uses: actions/setup-java@v4
+        with:
+          java-version: '17'
+          distribution: 'temurin'
+
+      - name: Configurar Gradle
+        uses: gradle/actions/setup-gradle@v3
+
+      - name: Extraer Versión Base y Formatear Snapshot
+        id: snapshot_version
+        run: |
+          # Lee pluginKitVersion de gradle.properties
+          BASE_VERSION=$(grep "^pluginKitVersion=" gradle.properties | cut -d'=' -f2 | tr -d '[:space:]')
+          SNAPSHOT_VERSION="${BASE_VERSION}-SNAPSHOT"
+          echo "VERSION=$SNAPSHOT_VERSION" >> $GITHUB_OUTPUT
+          echo "Publicando versión de desarrollo: $SNAPSHOT_VERSION"
+
+      - name: Publicar Snapshots en GitHub Packages
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          GITHUB_ACTOR: ${{ github.actor }}
+        run: |
+          chmod +x gradlew
+          ./gradlew :build-logic:publish :gradle-catalog:publish -PpluginVersion="${{ steps.snapshot_version.outputs.VERSION }}" --no-daemon --stacktrace
+

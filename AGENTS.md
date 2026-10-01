@@ -46,3 +46,16 @@ El proyecto proveerá los siguientes plugins de convención:
 *   Retrofit, OkHttp, Hilt, Coroutines, KSP
 *   Navigation Compose, Kotlin Serialization
 *   Maven Publish
+
+## Skills Especializados del Workspace (`.agents/skills/`)
+El repositorio cuenta con skills dedicados para guiar el desarrollo, testing y despliegue del proyecto:
+1. [**`github-actions-ci-cd`**](file:///.agents/skills/github-actions-ci-cd/SKILL.md): Flujos de integración y despliegue continuo con GitHub Actions y publicación en GitHub Packages Maven.
+2. [**`gradle-convention-plugins`**](file:///.agents/skills/gradle-convention-plugins/SKILL.md): Pautas y estándares de desarrollo de plugins de convención en Kotlin DSL para Gradle 9+ y AGP 9.0 en `build-logic`.
+3. [**`plugin-testing-and-validation`**](file:///.agents/skills/plugin-testing-and-validation/SKILL.md): Guías de prueba local, validación de módulos de ejemplo (`showcase`, librerías) y `mavenLocal`.
+
+## Estrategia de Versionado y Despliegue (CI/CD)
+* **Versión centralizada**: La versión semántica base se define en `gradle.properties` (`pluginKitVersion=X.Y.Z`). Nunca hardcodear versiones fijas en `build-logic/build.gradle.kts` ni `gradle-catalog/build.gradle.kts`.
+* **Desarrollo continuo**: Al hacer push/merge a `develop`, el workflow `publish-snapshots.yml` publica automáticamente artefactos `X.Y.Z-SNAPSHOT` en GitHub Packages.
+* **Releases oficiales**: Al hacer push/merge a `main`, el workflow `publish-release.yml` publica la versión oficial limpia `X.Y.Z`, crea el Git Tag `vX.Y.Z` y genera la GitHub Release automáticamente.
+
+
