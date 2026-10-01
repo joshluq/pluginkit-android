@@ -31,11 +31,12 @@ class AndroidLibraryConventionPlugin : Plugin<Project> {
             }
 
             extensions.configure<LibraryExtension> {
-                compileSdk = 37
+                compileSdk = getIntVersion("android-compileSdk", 37)
                 defaultConfig {
-                    minSdk = 24
+                    minSdk = getIntVersion("android-minSdk", 24)
                     consumerProguardFiles("consumer-rules.pro")
                 }
+
 
                 buildTypes {
                     release {

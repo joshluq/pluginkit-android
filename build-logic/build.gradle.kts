@@ -10,35 +10,28 @@ version = providers.gradleProperty("pluginVersion")
 
 
 
-val agpVersion = "9.4.1"
-val kotlinVersion = "2.4.20"
-val detektVersion = "1.23.8"
-val sonarVersion = "7.1.0.6387"
-val koverVersion = "0.9.11"
-val hiltVersion = "2.60.1"
-val roomVersion = "2.8.5"
-val spotlessVersion = "8.10.3"
-val kspVersion = "2.3.12"
-
 repositories {
     google()
     mavenCentral()
     gradlePluginPortal()
 }
 
+val libsCatalog = extensions.getByType<VersionCatalogsExtension>().named("libs")
+
 dependencies {
-    //noinspection UseTomlInstead
-    implementation("com.android.tools.build:gradle:$agpVersion")
-    implementation("org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlinVersion")
-    implementation("org.jetbrains.kotlin:compose-compiler-gradle-plugin:$kotlinVersion")
-    implementation("io.gitlab.arturbosch.detekt:detekt-gradle-plugin:${detektVersion}")
-    implementation("org.sonarsource.scanner.gradle:sonarqube-gradle-plugin:${sonarVersion}")
-    implementation("org.jetbrains.kotlinx:kover-gradle-plugin:${koverVersion}")
-    implementation("com.google.dagger:hilt-android-gradle-plugin:$hiltVersion")
-    implementation("androidx.room:room-gradle-plugin:$roomVersion")
-    implementation("com.diffplug.spotless:spotless-plugin-gradle:${spotlessVersion}")
-    implementation("com.google.devtools.ksp:com.google.devtools.ksp.gradle.plugin:$kspVersion")
+    implementation(dependencies.create("com.android.tools.build:gradle:${libsCatalog.findVersion("agp").get().requiredVersion}"))
+    implementation(dependencies.create("org.jetbrains.kotlin:kotlin-gradle-plugin:${libsCatalog.findVersion("kotlin").get().requiredVersion}"))
+    implementation(dependencies.create("org.jetbrains.kotlin:compose-compiler-gradle-plugin:${libsCatalog.findVersion("kotlin").get().requiredVersion}"))
+    implementation(dependencies.create("io.gitlab.arturbosch.detekt:detekt-gradle-plugin:${libsCatalog.findVersion("detektVersion").get().requiredVersion}"))
+    implementation(dependencies.create("org.sonarsource.scanner.gradle:sonarqube-gradle-plugin:${libsCatalog.findVersion("sonarVersion").get().requiredVersion}"))
+    implementation(dependencies.create("org.jetbrains.kotlinx:kover-gradle-plugin:${libsCatalog.findVersion("koverVersion").get().requiredVersion}"))
+    implementation(dependencies.create("com.google.dagger:hilt-android-gradle-plugin:${libsCatalog.findVersion("hilt").get().requiredVersion}"))
+    implementation(dependencies.create("androidx.room:room-gradle-plugin:${libsCatalog.findVersion("room").get().requiredVersion}"))
+    implementation(dependencies.create("com.diffplug.spotless:spotless-plugin-gradle:${libsCatalog.findVersion("spotless").get().requiredVersion}"))
+    implementation(dependencies.create("com.google.devtools.ksp:com.google.devtools.ksp.gradle.plugin:${libsCatalog.findVersion("ksp").get().requiredVersion}"))
 }
+
+
 
 gradlePlugin {
     plugins {
