@@ -1,66 +1,72 @@
 ---
 name: plugin-testing-and-validation
-description: Procedimientos para verificar, probar localmente y validar plugins de convención en PluginKit, módulos de showcase y publicación local con mavenLocal.
+description: Runbooks and procedures for verifying, testing locally, and validating convention plugins in PluginKit, showcase modules, and local publishing with mavenLocal.
 ---
 
 # Plugin Testing and Validation Specialist - PluginKit
 
-Este skill describe cómo verificar, depurar y validar los convention plugins desarrollados en **PluginKit** de manera local y determinista.
+This skill describes how to verify, debug, and validate convention plugins developed in **PluginKit** deterministically.
 
 ---
 
-## 1. Módulos de Verificación
+## 1. Test & Consumer Modules
 
-El repositorio cuenta con tres módulos de prueba/consumo directo de los plugins:
-* `showcase`: Módulo de aplicación Android que valida `pluginkit.android.application`, `pluginkit.android.compose`, etc.
-* `mylibrary`: Módulo de librería Android que valida `pluginkit.android.library`, Hilt, Room y publicación Android.
-* `myjvmlibrary`: Módulo puro de Kotlin/Java que valida `pluginkit.jvm.library` y `pluginkit.jvm.publishing`.
+The repository provides three modules that directly consume and validate the convention plugins:
+* `showcase`: Android application module validating `pluginkit.android.application`, `pluginkit.android.compose`, Hilt, Room, and Navigation.
+* `mylibrary`: Android library module validating `pluginkit.android.library`, quality tools, and `pluginkit.android.publishing`.
+* `myjvmlibrary`: Pure JVM Kotlin module validating `pluginkit.jvm.library` and `pluginkit.jvm.publishing`.
 
 ---
 
-## 2. Comandos Clave de Validación
+## 2. Key Validation Commands
 
-### Compilación y Verificación de Plugins
-Para validar que `build-logic` compila sin errores y cumple con las tareas de plugin development:
+### Plugin Development Verification
+Verify that `build-logic` compiles and passes all plugin validation tasks:
 ```bash
 ./gradlew :build-logic:check
 ```
 
-### Comprobación Integral de Calidad
-Ejecuta las herramientas estáticas (Detekt, Spotless, Linters):
+### Static Analysis & Code Quality Checks
+Run formatting and quality gates:
 ```bash
-# Validar formato
+# Verify code formatting (Ktlint)
 ./gradlew spotlessCheck
 
-# Aplicar formato automático
+# Apply automated formatting fixes
 ./gradlew spotlessApply
 
-# Ejecutar análisis estático
+# Run Detekt static analysis
 ./gradlew detekt
 ```
 
-### Probar Compilación de los Módulos de Ejemplo
+### Build Consumer Modules
+Test the compilation and packaging of consumer modules:
 ```bash
-# Probar compilación del Showcase Android
+# Android App Showcase build
 ./gradlew :showcase:assembleDebug
 
-# Probar compilación de librerías
+# Android Library AAR packaging
 ./gradlew :mylibrary:assemble
+
+# JVM Library JAR packaging & verification
 ./gradlew :myjvmlibrary:build
 ```
 
 ---
 
-## 3. Validación de Publicación Local (`mavenLocal`)
+## 3. Local Maven Publication Validation (`mavenLocal`)
 
-Antes de hacer push o disparar el workflow de GitHub Actions, puedes publicar los plugins y el catálogo en tu repositorio local Maven:
+Before pushing code or triggering CI/CD pipelines, publish artifacts to your local Maven repository (`~/.m2/repository`):
 
 ```bash
-# Publicar todos los plugins a ~/.m2/repository
+# Publish all convention plugins to ~/.m2/repository
 ./gradlew :build-logic:publishToMavenLocal
 
-# Publicar el Version Catalog a ~/.m2/repository
+# Publish Version Catalog to ~/.m2/repository
 ./gradlew :gradle-catalog:publishToMavenLocal
+
+# Test publishing with a dynamic version override
+./gradlew :build-logic:publishToMavenLocal :gradle-catalog:publishToMavenLocal -PpluginVersion="2.0.0-SNAPSHOT"
 ```
 
-Esto permite verificar la estructura de los POM generados y los artefactos sin ensuciar GitHub Packages.
+This verifies the generated POM files, metadata, and artifact bundles without touching remote GitHub Packages.

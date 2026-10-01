@@ -1,142 +1,112 @@
 ---
 name: github-actions-ci-cd
-description: Directrices, mejores prácticas y solución de problemas para GitHub Actions y flujos de CI/CD en PluginKit, enfocado en compilación de Gradle, publicación de Convention Plugins y Version Catalogs a GitHub Packages Maven.
+description: Authoritative guidelines, best practices, and troubleshooting for GitHub Actions and CI/CD pipelines in PluginKit, focusing on Gradle builds, convention plugins, and Version Catalog deployment to GitHub Packages Maven.
 ---
 
 # GitHub Actions CI/CD Specialist - PluginKit
 
-Este skill proporciona directrices autoritativas para diseñar, mantener y diagnosticar flujos de CI/CD en GitHub Actions para el repositorio **PluginKit**.
+This skill provides authoritative guidelines for designing, maintaining, and troubleshooting GitHub Actions CI/CD workflows for the **PluginKit** repository.
 
 ---
 
-## 1. Contexto de Despliegue del Proyecto
+## 1. Project Deployment Context
 
-PluginKit utiliza GitHub Actions para dos propósitos clave:
-1. **Validación Continua (CI)**: Análisis estático, comprobación de formato y compilación de plugins y módulos de ejemplo (`showcase`, `mylibrary`, `myjvmlibrary`).
-2. **Publicación Continua (CD)**: Publicación de los artefactos compilados a **GitHub Packages (`maven.pkg.github.com`)**:
-   - `:build-logic:publish` -> Plugins Maven (`pluginkit.*`)
+PluginKit uses GitHub Actions for two core responsibilities:
+1. **Continuous Integration (CI)**: Static analysis, code formatting checks, and compilation of all plugins and sample consumer modules (`showcase`, `mylibrary`, `myjvmlibrary`).
+2. **Continuous Deployment (CD)**: Publishing compiled Maven artifacts to **GitHub Packages (`maven.pkg.github.com`)**:
+   - `:build-logic:publish` -> Convention Plugins (`pluginkit.*`)
    - `:gradle-catalog:publish` -> Gradle Version Catalog (`es.joshluq.kit:catalog`)
 
 ---
 
-## 2. Configuración Esencial para Publicación en GitHub Packages
+## 2. GitHub Packages Publishing Requirements
 
-### Permisos del Job (`permissions`)
-Para que un workflow pueda publicar paquetes en GitHub Packages, debe declarar explícitamente permisos de escritura:
+### Job Permissions (`permissions`)
+Workflows publishing artifacts to GitHub Packages must declare explicit write permissions:
 
 ```yaml
 permissions:
-  contents: read
+  contents: write
   packages: write
 ```
 
 > [!IMPORTANT]
-> Sin `packages: write`, Gradle fallará con un error `HTTP 401 Unauthorized` o `HTTP 403 Forbidden` al subir los artefactos Maven.
+> Omitting `packages: write` will cause Gradle to fail with `HTTP 401 Unauthorized` or `HTTP 403 Forbidden` during artifact upload.
 
-### Variables de Entorno y Autenticación
-Los scripts de Gradle (`build-logic/build.gradle.kts` y `gradle-catalog/build.gradle.kts`) esperan las siguientes variables de entorno:
-- `GITHUB_REPOSITORY`: Nombre en formato `owner/repo` (disponible por defecto en GitHub Actions).
-- `GITHUB_ACTOR`: Usuario que ejecuta la acción (disponible por defecto o mapeado explícitamente).
-- `GITHUB_TOKEN`: Secreto generado para el workflow (`${{ secrets.GITHUB_TOKEN }}`).
+### Environment Variables & Credentials
+Gradle build scripts (`build-logic/build.gradle.kts` and `gradle-catalog/build.gradle.kts`) expect the following environment variables:
+- `GITHUB_REPOSITORY`: Repository name in `owner/repo` format (provided automatically by GitHub Actions).
+- `GITHUB_ACTOR`: The GitHub user triggering the action.
+- `GITHUB_TOKEN`: The workflow-generated secret (`${{ secrets.GITHUB_TOKEN }}`).
 
 ```yaml
-- name: Publicar Plugins y Catálogo
+- name: Publish Artifacts
   env:
     GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
     GITHUB_ACTOR: ${{ github.actor }}
     GITHUB_REPOSITORY: ${{ github.repository }}
   run: |
     chmod +x gradlew
-    ./gradlew :build-logic:publish :gradle-catalog:publish --no-daemon --stacktrace
+    ./gradlew :build-logic:publish :gradle-catalog:publish -PpluginVersion="<VERSION>" --no-daemon --stacktrace
 ```
 
 ---
 
-## 3. Estándar de Pasos para Gradle en GitHub Actions
+## 3. Recommended Gradle Step Standards
 
-Siempre utiliza las acciones oficiales optimizadas para rendimiento y caching:
+Always use official, performance-optimized GitHub Actions with caching:
 
 ```yaml
-- name: Checkout del código
+- name: Checkout Code
   uses: actions/checkout@v4
+  with:
+    fetch-depth: 0
 
-- name: Configurar JDK 17
+- name: Setup JDK 17
   uses: actions/setup-java@v4
   with:
     java-version: '17'
     distribution: 'temurin'
-    cache: 'gradle'
 
-- name: Configurar Gradle
+- name: Setup Gradle
   uses: gradle/actions/setup-gradle@v3
-  with:
-    cache-read-only: ${{ github.ref != 'refs/heads/main' && github.ref != 'refs/heads/develop' }}
 ```
 
 ---
 
-## 4. Arquitectura de Workflows del Repositorio
+## 4. Repository Workflow Architecture
 
-El repositorio separa completamente la publicación continua de **Snapshots** y **Releases oficiales**, eliminando la necesidad de commits manuales de cambio de versión:
+The repository completely decouples continuous **Snapshot** publishing from official **Releases**, removing the need for manual version-bump commits:
 
-### A. Publicación de Snapshots (`publish-snapshots.yml`)
-* **Disparador**: Push a rama `develop`.
-* **Comportamiento**: Publica automáticamente con versión `X.Y.Z-SNAPSHOT` (definida en `gradle.properties`) a GitHub Packages.
+### A. Snapshot Publishing (`publish-snapshots.yml`)
+* **Trigger**: Push / Merge to the `develop` branch.
+* **Behavior**:
+  1. Reads `pluginKitVersion` from `gradle.properties` (e.g., `2.0.0`).
+  2. Appends `-SNAPSHOT` dynamically (e.g., `2.0.0-SNAPSHOT`).
+  3. Publishes to GitHub Packages with `-PpluginVersion="${VERSION}-SNAPSHOT"`.
 
-### B. Publicación de Releases Oficiales (`publish-release.yml`)
-* **Disparador**: Push o merge a la rama `main`.
-* **Comportamiento**:
-  1. Lee automáticamente `pluginKitVersion` de `gradle.properties` (ej. `2.0.0`).
-  2. Publica en GitHub Packages con `-PpluginVersion="2.0.0"`.
-  3. Crea automáticamente el Git Tag (ej. `v2.0.0`) y la **GitHub Release** oficial con notas y changelog de los PRs incluidos.
+### B. Official Release Publishing (`publish-release.yml`)
+* **Trigger**: Push / Merge to the `main` branch.
+* **Behavior**:
+  1. Reads clean `pluginKitVersion` from `gradle.properties` (e.g., `2.0.0`).
+  2. Publishes to GitHub Packages with `-PpluginVersion="2.0.0"`.
+  3. Automatically creates the Git Tag (e.g., `v2.0.0`) and the **GitHub Release** with auto-generated release notes and changelog.
 
-
-### C. Validación Continua en PRs (`pr-checks.yml`)
-* **Disparador**: Pull Request hacia `main` o `develop`.
-* **Comportamiento**: Ejecuta `./gradlew :build-logic:check :gradle-catalog:check :showcase:assembleDebug :mylibrary:assemble :myjvmlibrary:build`.
-
-
-```yaml
-name: PR Checks
-
-on:
-  pull_request:
-    branches:
-      - main
-      - develop
-    paths-ignore:
-      - '**.md'
-      - 'docs/**'
-
-jobs:
-  check:
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v4
-
-      - uses: actions/setup-java@v4
-        with:
-          java-version: '17'
-          distribution: 'temurin'
-
-      - uses: gradle/actions/setup-gradle@v3
-
-      - name: Ejecutar Validaciones y Pruebas
-        run: |
-          chmod +x gradlew
-          ./gradlew check --no-daemon
-```
+### C. Continuous Verification in PRs (`pr-checks.yml`)
+* **Trigger**: Pull Request targeting `main` or `develop`.
+* **Behavior**: Executes:
+  ```bash
+  ./gradlew :build-logic:check :showcase:assembleDebug :mylibrary:assemble :myjvmlibrary:build --no-daemon
+  ```
 
 ---
 
-## 5. Diagnóstico de Errores Frecuentes
+## 5. Common Troubleshooting & Error Resolution
 
-1. **`HTTP 401 / 403 Forbidden` al publicar**:
-   - Revisa si el job tiene el bloque `permissions: packages: write`.
-   - Verifica en los repositorios de GitHub que GitHub Packages esté habilitado con permisos de escritura para GitHub Actions (`Repo Settings -> Actions -> General -> Workflow permissions -> Read and write permissions`).
+1. **`HTTP 401 / 403 Forbidden` on publication**:
+   - Ensure the workflow job includes `permissions: packages: write`.
+   - Verify that GitHub Packages permissions are enabled in repository settings (`Settings -> Actions -> General -> Workflow permissions -> Read and write permissions`).
 2. **`Permission Denied: ./gradlew`**:
-   - Falta el flag ejecutable en el script del wrapper en Linux. Añade siempre `chmod +x gradlew` antes de invocarlo.
-3. **Incompatibilidad de JVM**:
-   - PluginKit utiliza Gradle 9.x y AGP 9.0; asegúrate de que el JDK configurado sea compatible (Java 17 o Java 21).
-4. **URLs de Maven Packages en mayúsculas**:
-   - GitHub Packages es sensible a mayúsculas/minúsculas en el endpoint (`owner/repo`). Asegúrate de que `GITHUB_REPOSITORY` coincida con la URL oficial del repositorio en GitHub.
+   - The Gradle wrapper script lacks executable permissions on Linux. Always run `chmod +x gradlew` before invoking it.
+3. **Case Sensitivity in Package URLs**:
+   - GitHub Packages URLs are case-sensitive on the repository owner/name path (`https://maven.pkg.github.com/owner/repo`). Ensure `GITHUB_REPOSITORY` matches the exact case of the GitHub repository URL.
