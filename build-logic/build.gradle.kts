@@ -4,17 +4,21 @@ plugins {
 }
 
 group = "es.joshluq.kit.pluginkit"
-version = "2.0.0"
+version = providers.gradleProperty("pluginVersion")
+    .orElse(providers.gradleProperty("pluginKitVersion"))
+    .getOrElse("2.0.0")
 
-val agpVersion = "9.4.0"
-val kotlinVersion = "2.4.10"
+
+
+val agpVersion = "9.4.1"
+val kotlinVersion = "2.4.20"
 val detektVersion = "1.23.8"
 val sonarVersion = "7.1.0.6387"
-val koverVersion = "0.9.9"
+val koverVersion = "0.9.11"
 val hiltVersion = "2.60.1"
-val roomVersion = "2.8.4"
-val spotlessVersion = "8.10.1"
-val kspVersion = "2.3.11"
+val roomVersion = "2.8.5"
+val spotlessVersion = "8.10.3"
+val kspVersion = "2.3.12"
 
 repositories {
     google()

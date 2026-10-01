@@ -4,7 +4,11 @@ plugins {
 }
 
 group = "es.joshluq.kit"
-version = "2.0.0"
+version = providers.gradleProperty("pluginVersion")
+    .orElse(providers.gradleProperty("pluginKitVersion"))
+    .getOrElse("2.0.0")
+
+
 
 catalog {
     versionCatalog {
