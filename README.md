@@ -35,8 +35,10 @@ El proyecto provee los siguientes plugins de convención:
 | `pluginkit.quality` | Herramientas de calidad de código (Detekt, Sonar, Kover). | Configurable vía extensión `pluginkitQuality` |
 | `pluginkit.android.publishing` | Publicación de librerías Android a repositorios Maven. | Configurable vía extensión `androidPublishing` |
 
+> 💡 **Próximos Plugins en Desarrollo**: Consulta nuestro [**Roadmap de Evolución de Plugins**](docs/ROADMAP_PLUGINS.md) para conocer las propuestas de Baseline Profiles, Screenshot Testing, Compose Metrics, DataStore y más.
 
 ## 🚀 Modo de Uso
+
 
 Gracias a la arquitectura de `build-logic` y los Convention Plugins, configurar un nuevo módulo es extremadamente simple.
 
