@@ -110,3 +110,7 @@ The repository completely decouples continuous **Snapshot** publishing from offi
    - The Gradle wrapper script lacks executable permissions on Linux. Always run `chmod +x gradlew` before invoking it.
 3. **Case Sensitivity in Package URLs**:
    - GitHub Packages URLs are case-sensitive on the repository owner/name path (`https://maven.pkg.github.com/owner/repo`). Ensure `GITHUB_REPOSITORY` matches the exact case of the GitHub repository URL.
+4. **`HTTP 409 Conflict` on release publishing**:
+   - GitHub Packages enforces immutability for official release artifacts (non-`-SNAPSHOT`). If a version tag or publication was already partially uploaded or previously published, GitHub Packages will reject re-uploading identical POM or metadata files with `409 Conflict`.
+   - **Resolution**: Either delete the existing conflicting version under repository *Packages -> Package settings -> Manage versions*, or increment the version (`pluginKitVersion=X.Y.Z`) before triggering the release workflow.
+

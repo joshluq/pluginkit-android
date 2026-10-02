@@ -56,46 +56,48 @@ class JvmPublishingConventionPlugin : Plugin<Project> {
             withJavadocJar()
         }
 
-        extensions.configure<PublishingExtension> {
-            publications {
-                create<MavenPublication>("mavenJava") {
-                    val javaComponent = components.findByName("java")
-                    if (javaComponent != null) {
-                        from(javaComponent)
-                    }
+        afterEvaluate {
+            extensions.configure<PublishingExtension> {
+                publications {
+                    create<MavenPublication>("mavenJava") {
+                        val javaComponent = components.findByName("java")
+                        if (javaComponent != null) {
+                            from(javaComponent)
+                        }
 
-                    groupId = extension.groupId.get()
-                    artifactId = extension.artifactId.get()
-                    version = extension.version.get()
+                        groupId = extension.groupId.get()
+                        artifactId = extension.artifactId.get()
+                        version = extension.version.get()
 
-                    pom {
-                        name.set(extension.pomName)
-                        description.set(extension.pomDescription)
+                        pom {
+                            name.set(extension.pomName)
+                            description.set(extension.pomDescription)
+                        }
                     }
                 }
-            }
 
-            repositories {
-                maven {
-                    name = extension.repoName.get()
-                    url = URI.create(
-                        extension.repoUrl.orNull
-                            ?: System.getenv("MAVEN_REPO_URL")
-                            ?: System.getenv("REPO_URL")
-                            ?: "https://maven.pkg.github.com/${System.getenv("GITHUB_REPOSITORY") ?: "joshluq/pluginkit-android"}"
-                    )
+                repositories {
+                    maven {
+                        name = extension.repoName.get()
+                        url = URI.create(
+                            extension.repoUrl.orNull
+                                ?: System.getenv("MAVEN_REPO_URL")
+                                ?: System.getenv("REPO_URL")
+                                ?: "https://maven.pkg.github.com/${System.getenv("GITHUB_REPOSITORY") ?: "joshluq/pluginkit-android"}"
+                        )
 
-                    credentials {
-                        username = extension.repoUser.orNull
-                            ?: System.getenv("MAVEN_REPO_USER")
-                            ?: System.getenv("REPO_USER")
-                            ?: System.getenv("GITHUB_ACTOR")
-                            ?: ""
-                        password = extension.repoPassword.orNull
-                            ?: System.getenv("MAVEN_REPO_PASSWORD")
-                            ?: System.getenv("REPO_PASSWORD")
-                            ?: System.getenv("GITHUB_TOKEN")
-                            ?: ""
+                        credentials {
+                            username = extension.repoUser.orNull
+                                ?: System.getenv("MAVEN_REPO_USER")
+                                ?: System.getenv("REPO_USER")
+                                ?: System.getenv("GITHUB_ACTOR")
+                                ?: ""
+                            password = extension.repoPassword.orNull
+                                ?: System.getenv("MAVEN_REPO_PASSWORD")
+                                ?: System.getenv("REPO_PASSWORD")
+                                ?: System.getenv("GITHUB_TOKEN")
+                                ?: ""
+                        }
                     }
                 }
             }

@@ -56,51 +56,53 @@ class AndroidPublishingConventionPlugin : Plugin<Project> {
             }
         }
 
-        extensions.configure<PublishingExtension> {
-            publications {
-                create<MavenPublication>("release") {
-                    val releaseComponent = components.findByName("release")
-                    if (releaseComponent != null) {
-                        from(releaseComponent)
-                    }
+        afterEvaluate {
+            extensions.configure<PublishingExtension> {
+                publications {
+                    create<MavenPublication>("release") {
+                        val releaseComponent = components.findByName("release")
+                        if (releaseComponent != null) {
+                            from(releaseComponent)
+                        }
 
-                    groupId = extension.groupId.get()
-                    artifactId = extension.artifactId.get()
-                    version = extension.version.get()
+                        groupId = extension.groupId.get()
+                        artifactId = extension.artifactId.get()
+                        version = extension.version.get()
 
-                    pom {
-                        name.set(extension.pomName)
-                        description.set(extension.pomDescription)
+                        pom {
+                            name.set(extension.pomName)
+                            description.set(extension.pomDescription)
+                        }
                     }
                 }
-            }
 
-            // Repositories are configured lazily when repoUrl is present
-            repositories {
-                maven {
-                    name = extension.repoName.get()
-                    // Si se especifica repoUrl, se asigna; de lo contrario se apunta a mavenLocal o fallback seguro
-                    url = URI.create(
-                        extension.repoUrl.orNull
-                            ?: System.getenv("MAVEN_REPO_URL")
-                            ?: System.getenv("REPO_URL")
-                            ?: "https://maven.pkg.github.com/${System.getenv("GITHUB_REPOSITORY") ?: "joshluq/pluginkit-android"}"
-                    )
+                // Repositories are configured lazily when repoUrl is present
+                repositories {
+                    maven {
+                        name = extension.repoName.get()
+                        url = URI.create(
+                            extension.repoUrl.orNull
+                                ?: System.getenv("MAVEN_REPO_URL")
+                                ?: System.getenv("REPO_URL")
+                                ?: "https://maven.pkg.github.com/${System.getenv("GITHUB_REPOSITORY") ?: "joshluq/pluginkit-android"}"
+                        )
 
-                    credentials {
-                        username = extension.repoUser.orNull
-                            ?: System.getenv("MAVEN_REPO_USER")
-                            ?: System.getenv("REPO_USER")
-                            ?: System.getenv("GITHUB_ACTOR")
-                            ?: ""
-                        password = extension.repoPassword.orNull
-                            ?: System.getenv("MAVEN_REPO_PASSWORD")
-                            ?: System.getenv("REPO_PASSWORD")
-                            ?: System.getenv("GITHUB_TOKEN")
-                            ?: ""
+                        credentials {
+                            username = extension.repoUser.orNull
+                                ?: System.getenv("MAVEN_REPO_USER")
+                                ?: System.getenv("REPO_USER")
+                                ?: System.getenv("GITHUB_ACTOR")
+                                ?: ""
+                            password = extension.repoPassword.orNull
+                                ?: System.getenv("MAVEN_REPO_PASSWORD")
+                                ?: System.getenv("REPO_PASSWORD")
+                                ?: System.getenv("GITHUB_TOKEN")
+                                ?: ""
+                        }
                     }
                 }
             }
         }
     }
 }
+
